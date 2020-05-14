@@ -1,0 +1,109 @@
+{
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "plugins": [
+      "babel",
+      "react"
+    ],
+    "settings": {
+      "import/resolver": {
+        "alias": {
+          "map": [
+            [
+              "selectors",
+              "./src/redux/selectors"
+            ],
+            [
+              "actions",
+              "./src/redux/actions"
+            ],
+            [
+              "components",
+              "./src/components"
+            ],
+            [
+              "utils",
+              "./src/utils"
+            ],
+            [
+              "scss",
+              "./src/scss"
+            ],
+            [
+              "screens",
+              "./src/screens"
+            ],
+            [
+              "constants",
+              "./src/constants"
+            ],
+            [
+              "reducers",
+              "./src/redux/reducers"
+            ],
+            [
+              "helper",
+              "./src/helper"
+            ],
+            [
+              "proto",
+              "./src/gen/proto"
+            ],
+            [
+              "interfaces",
+              "./src/interfaces"
+            ]
+          ],
+          "extensions": [
+            ".js"
+          ]
+        }
+      }
+    },
+    "rules": {
+      "react/jsx-uses-react": 1,
+      "react/jsx-uses-vars": 1,
+      "react/jsx-no-duplicate-props": 1,
+      "react/react-in-jsx-scope": 1,
+      "linebreak-style": 0,
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".js",
+            ".jsx"
+          ]
+        }
+      ],
+      "max-len": 0,
+      "no-restricted-properties": 0,
+      "no-use-before-define": 0,
+      "react/forbid-prop-types": 0,
+      "react/destructuring-assignment": 0,
+      "no-underscore-dangle": 0,
+      "react/jsx-props-no-spreading": 0,
+      "react/no-array-index-key": 0,
+      "react/jsx-wrap-multilines": 0,
+      "operator-linebreak": 0,
+      "react/jsx-one-expression-per-line": 0,
+      "no-shadow": 0,
+      "array-callback-return": 0,
+      "consistent-return": 0,
+      "no-return-assign": 0,
+      "no-plusplus": 0,
+      "react/state-in-constructor": 0,
+      "radix": 0,
+      "no-async-promise-executor": 0,
+      "import/no-cycle": 0,
+      "import/no-self-import": 0,
+      "react/no-unescaped-entities": 0,
+    },
+    "extends": [
+      "airbnb-base",
+      "airbnb-base/rules/strict",
+      "airbnb/rules/react"
+    ]
+  }

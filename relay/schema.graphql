@@ -1,0 +1,8 @@
+type BasicResponse {
+    message: String!
+    statusCode: Int!
+}
+
+type Query {
+    UserGraphInfo: BasicResponse!
+}

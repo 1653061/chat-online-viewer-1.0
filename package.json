@@ -9,16 +9,19 @@
     "relay": "relay-compiler"
   },
   "dependencies": {
+    "formik": "^2.1.4",
     "isomorphic-unfetch": "^3.0.0",
     "next": "9.4.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-relay": "^9.1.0",
     "relay-runtime": "^9.1.0",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.1.0",
+    "yup": "^0.28.5"
   },
   "devDependencies": {
     "babel-plugin-relay": "^9.1.0",
+    "babel-plugin-styled-components": "^1.10.7",
     "graphql": "^15.0.0",
     "relay-compiler": "^9.1.0",
     "relay-config": "^9.1.0"

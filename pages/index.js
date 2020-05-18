@@ -1,8 +1,12 @@
 import Head from 'next/head'
-import Button from 'components/Button';
+import HPBody from 'components/HPBody';
+import Header from 'components/Header';
 
 const Main = ({}) => {
-  return <Button></Button>
+  return <>
+      <Header />
+      <HPBody />
+    </>
 }
 
 export default Main;

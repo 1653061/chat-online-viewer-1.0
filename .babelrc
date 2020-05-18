@@ -4,6 +4,10 @@
         "relay",
         [
             "babel-plugin-styled-components"
-        ]
+        ],
+        ["import", {
+            "libraryName": "antd",
+            "style": false
+        }]
     ]
 }

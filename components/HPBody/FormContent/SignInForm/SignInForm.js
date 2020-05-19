@@ -1,11 +1,38 @@
 import React from 'react';
+import { commitMutation } from 'react-relay';
 import { Container } from './SignInForm.style';
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
+import environment from 'relay/RelayEnvironment';
+import { SignIn } from 'relay/graphql/UserGraph';
 import TextInput from 'components/Form/TextInput';
 import Button from 'components/Button';
 
 const SignInForm = ({}) => {
+
+    const signIn = ({
+        username: name,
+        password,
+        email = 'huanhiendanh@gmail.com',
+      }) => {
+        commitMutation(environment(), {
+          mutation: SignIn,
+          variables: {
+            input: {
+              password,
+              email,
+            },
+          },
+          onCompleted: ({ UserGraphSignIn }, errors) => {
+          console.log("SignInForm -> UserGraphSignIn", UserGraphSignIn)
+            const { refreshToken, token, user } = UserGraphSignIn;
+            localStorage.setItem('token', token);
+            localStorage.setItem('refreshToken', refreshToken);
+          },
+          onError: (err) => console.error(err),
+        });
+      };
+
     return <Container>
         <Formik
             initialValues={{
@@ -19,7 +46,7 @@ const SignInForm = ({}) => {
                     .required('Required')
                     .min(8, 'At least 8 characters')
             })}
-            onSubmit={() => console.log("Submited!")}
+            onSubmit={signIn}
         >   
             <Form>
                 <TextInput 

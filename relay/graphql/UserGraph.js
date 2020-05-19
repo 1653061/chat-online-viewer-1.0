@@ -8,3 +8,31 @@ export const UserInfo = graphql`
     }
   }
 `;
+
+export const CreateAccount = graphql`
+  mutation UserGraphCreateAccountMutation($input: CreateUserInput!) {
+    UserGraphSignUp(input: $input) {
+      token
+      refreshToken
+      user {
+        name
+        email
+        phone
+      }
+    }
+  }
+`;
+
+export const SignIn = graphql`
+  mutation UserGraphSignInMutation($input: SignInUserInput!) {
+    UserGraphSignIn(input: $input) {
+      token
+      refreshToken
+      user {
+        name
+        email
+        phone
+      }
+    }
+  }
+`;

@@ -3,6 +3,35 @@ type BasicResponse {
     statusCode: Int!
 }
 
+type User {
+    email: String!
+    name: String!
+    phone: Int!
+}
+
+type UserPayload {
+    token: String!
+    refreshToken: String
+    user: User!
+}
+
+input CreateUserInput {
+   name: String!
+   password: String!
+   email: String!
+   phone: Int!
+}
+
+input SignInUserInput {
+    email: String!
+    password: String!
+}
+
 type Query {
     UserGraphInfo: BasicResponse!
+}
+
+type Mutation {
+    UserGraphSignUp(input: CreateUserInput!): UserPayload!
+    UserGraphSignIn(input: SignInUserInput!): UserPayload!
 }

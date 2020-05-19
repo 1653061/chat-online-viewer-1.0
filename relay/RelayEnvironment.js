@@ -9,26 +9,25 @@ function fetchQuery (
     cacheConfig,
     uploadables,
 ) {
-  return fetch('http://localhost:4200/graphql', {
+  return fetch(process.env.GRAPHQL_ENDPOINT, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }, // Add authentication and other headers here
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${localStorage.getItem('token')}`,
+      refreshtoken: `Bearer ${localStorage.getItem('refreshToken')}`,
+    },
     body: JSON.stringify({
-      query: operation.text, // GraphQL text from input
+      query: operation.text,
       variables
     })
   }).then(response => response.json())
 }
 
 export default function initEnvironment ({ records = {} } = {}) {
-    // Create a network layer from the fetch function
   const network = Network.create(fetchQuery)
   const store = new Store(new RecordSource(records))
 
-    // Make sure to create a new Relay environment for every server-side request so that data
-    // isn't shared between connections (which would be bad)
   if (!process.browser) {
     return new Environment({
       network,
@@ -36,7 +35,6 @@ export default function initEnvironment ({ records = {} } = {}) {
     })
   }
 
-    // reuse Relay environment on client-side
   if (!relayEnvironment) {
     relayEnvironment = new Environment({
       network,

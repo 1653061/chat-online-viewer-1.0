@@ -36,3 +36,17 @@ export const SignIn = graphql`
     }
   }
 `;
+
+export const VerifyToken = graphql`
+  query UserGraphVerifyTokenQuery {
+    UserGraphVerifyToken {
+      token
+      refreshToken
+      user {
+        name
+        email
+        phone
+      }
+    }
+  }
+`;

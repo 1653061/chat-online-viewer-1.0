@@ -8,7 +8,7 @@ import { SignIn } from 'relay/graphql/UserGraph';
 import TextInput from 'components/Form/TextInput';
 import Button from 'components/Button';
 
-const SignInForm = ({}) => {
+const SignInForm = ({ }) => {
     const signIn = ({
         password,
         email
@@ -26,10 +26,12 @@ const SignInForm = ({}) => {
               console.log(errors);
             }
             else {
-              console.log("SignInForm -> UserGraphSignIn", UserGraphSignIn);
               const { refreshToken, token, user } = UserGraphSignIn;
+              document.cookie = `token=${token}`;
+              document.cookie = `refreshToken=${refreshToken}`;
               localStorage.setItem('token', token);
               localStorage.setItem('refreshToken', refreshToken);
+
             }
           },
           onError: (err) => console.log(err.name),

@@ -29,6 +29,7 @@ input SignInUserInput {
 
 type Query {
     UserGraphInfo: BasicResponse!
+    UserGraphVerifyToken: UserPayload!
 }
 
 type Mutation {

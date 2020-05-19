@@ -8,14 +8,13 @@ import { CreateAccount } from 'relay/graphql/UserGraph';
 import TextInput from 'components/Form/TextInput';
 import Button from 'components/Button';
 
-const SignUpForm = ({}) => {
+const SignUpForm = ({ }) => {
   const createAccount = ({
     fullname: name,
     password,
     email,
     phone,
   }) => {
-    console.log('Here');
     commitMutation(environment(), {
       mutation: CreateAccount,
       variables: {
@@ -28,6 +27,8 @@ const SignUpForm = ({}) => {
       },
       onCompleted: ({ UserGraphSignUp }, errors) => {
         const { refreshToken, token, user } = UserGraphSignUp;
+        document.cookie = `token=${token}`;
+        document.cookie = `refreshToken=${refreshToken}`;
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
       },

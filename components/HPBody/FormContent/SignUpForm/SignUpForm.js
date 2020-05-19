@@ -10,11 +10,12 @@ import Button from 'components/Button';
 
 const SignUpForm = ({}) => {
   const createAccount = ({
-    username: name,
+    fullname: name,
     password,
-    email = 'huanhiendanh@gmail.com',
-    phone = 123456,
+    email,
+    phone,
   }) => {
+    console.log('Here');
     commitMutation(environment(), {
       mutation: CreateAccount,
       variables: {
@@ -30,7 +31,7 @@ const SignUpForm = ({}) => {
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
       },
-      onError: (err) => console.error(err),
+      onError: (err) => console.log(err),
     });
   };
 
@@ -38,16 +39,23 @@ const SignUpForm = ({}) => {
     <Container>
       <Formik
         initialValues={{
-          username: '',
+          fullname: '',
+          email: '',
+          phone: '',
           password: '',
-          repassword: '',
+          confirmpassword: '',
         }}
         validationSchema={Yup.object({
-          username: Yup.string().required('Required'),
+          fullname: Yup.string().required('Required'),
+          email: Yup.string()
+            .email('Must be email')
+            .required('Required'),
+          phone: Yup.number()
+            .required('Required'),
           password: Yup.string()
             .required('Required')
             .min(8, 'At least 8 characters'),
-          repassword: Yup.string()
+          confirmpassword: Yup.string()
             .required('Required')
             .oneOf([Yup.ref('password'), null], 'Passwords must match'),
         })}
@@ -55,10 +63,22 @@ const SignUpForm = ({}) => {
       >
         <Form>
           <TextInput
-            label="Username"
-            name="username"
+            label="Full Name"
+            name="fullname"
             type="text"
-            placeholder="Username"
+            placeholder="Full Name"
+          />
+          <TextInput
+            label="Email"
+            name="email"
+            type="text"
+            placeholder="Email"
+          />
+          <TextInput
+            label="Phone"
+            name="phone"
+            type="number"
+            placeholder="Phone"
           />
           <TextInput
             label="Password"
@@ -67,10 +87,10 @@ const SignUpForm = ({}) => {
             placeholder="Password"
           />
           <TextInput
-            label="Repassword"
-            name="repassword"
+            label="Confirm Password"
+            name="confirmpassword"
             type="password"
-            placeholder="Re Password"
+            placeholder="Confirm Password"
           />
           <Button option="Success" type="submit">
             Sign Up

@@ -9,11 +9,9 @@ import TextInput from 'components/Form/TextInput';
 import Button from 'components/Button';
 
 const SignInForm = ({}) => {
-
     const signIn = ({
-        username: name,
         password,
-        email = 'huanhiendanh@gmail.com',
+        email
       }) => {
         commitMutation(environment(), {
           mutation: SignIn,
@@ -24,23 +22,29 @@ const SignInForm = ({}) => {
             },
           },
           onCompleted: ({ UserGraphSignIn }, errors) => {
-          console.log("SignInForm -> UserGraphSignIn", UserGraphSignIn)
-            const { refreshToken, token, user } = UserGraphSignIn;
-            localStorage.setItem('token', token);
-            localStorage.setItem('refreshToken', refreshToken);
+            if (errors) {
+              console.log(errors);
+            }
+            else {
+              console.log("SignInForm -> UserGraphSignIn", UserGraphSignIn);
+              const { refreshToken, token, user } = UserGraphSignIn;
+              localStorage.setItem('token', token);
+              localStorage.setItem('refreshToken', refreshToken);
+            }
           },
-          onError: (err) => console.error(err),
+          onError: (err) => console.log(err.name),
         });
       };
 
     return <Container>
         <Formik
             initialValues={{
-                username: '',
+                email: '',
                 password: ''
             }}
             validationSchema={Yup.object({
-                username: Yup.string()
+                email: Yup.string()
+                    .email("Must be email")
                     .required('Required'),
                 password: Yup.string()
                     .required('Required')
@@ -50,10 +54,10 @@ const SignInForm = ({}) => {
         >   
             <Form>
                 <TextInput 
-                    label="Username"
-                    name="username"
+                    label="Email"
+                    name="email"
                     type="text"
-                    placeholder="Username"
+                    placeholder="Email"
                 />
                 <TextInput
                     label="Password"

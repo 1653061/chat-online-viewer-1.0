@@ -26,6 +26,7 @@
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-relay": "^9.1.0",
     "babel-plugin-styled-components": "^1.10.7",
+    "dotenv": "^8.2.0",
     "graphql": "^15.0.0",
     "relay-compiler": "^9.1.0",
     "relay-config": "^9.1.0"

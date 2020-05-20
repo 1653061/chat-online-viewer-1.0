@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { commitMutation } from 'react-relay';
 import { Container } from './SignUpForm.style';
 import { Formik, Form, useField } from 'formik';
@@ -7,8 +7,12 @@ import environment from 'relay/RelayEnvironment';
 import { CreateAccount } from 'relay/graphql/UserGraph';
 import TextInput from 'components/Form/TextInput';
 import Button from 'components/Button';
+import Router from 'next/router';
 
 const SignUpForm = ({ }) => {
+  const [noti, setNoti] = useState(false);
+  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
   const createAccount = ({
     fullname: name,
     password,
@@ -26,18 +30,31 @@ const SignUpForm = ({ }) => {
         },
       },
       onCompleted: ({ UserGraphSignUp }, errors) => {
-        const { refreshToken, token, user } = UserGraphSignUp;
-        document.cookie = `token=${token}`;
-        document.cookie = `refreshToken=${refreshToken}`;
-        localStorage.setItem('token', token);
-        localStorage.setItem('refreshToken', refreshToken);
+        if (errors) {
+          console.log(errors);
+        }
+        else {
+          const { refreshToken, token, user } = UserGraphSignUp;
+          document.cookie = `token=${token}`;
+          document.cookie = `refreshToken=${refreshToken}`;
+          localStorage.setItem('token', token);
+          localStorage.setItem('refreshToken', refreshToken);
+          Router.push('/message');
+        }
+        
       },
-      onError: (err) => console.log(err),
+      onError: (err) => {
+        setNoti(true);
+        setTimeout(() => {
+          setNoti(false)
+        }, 5000);
+      },
     });
   };
 
   return (
     <Container>
+      {noti ? <div className="noti"><p className="content">Email was registed!</p></div> : null}
       <Formik
         initialValues={{
           fullname: '',
@@ -51,7 +68,7 @@ const SignUpForm = ({ }) => {
           email: Yup.string()
             .email('Must be email')
             .required('Required'),
-          phone: Yup.number()
+          phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid')
             .required('Required'),
           password: Yup.string()
             .required('Required')
@@ -78,7 +95,7 @@ const SignUpForm = ({ }) => {
           <TextInput
             label="Phone"
             name="phone"
-            type="number"
+            type="text"
             placeholder="Phone"
           />
           <TextInput

@@ -50,3 +50,13 @@ export const VerifyToken = graphql`
     }
   }
 `;
+
+export const GetInfo = graphql`
+  query UserGraphGetInfoQuery {
+    UserGraphGetInfo {
+      name
+      email
+      phone
+    }
+  }
+`;

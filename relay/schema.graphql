@@ -16,11 +16,11 @@ type UserPayload {
 }
 
 input CreateUserInput {
-   name: String!
-   password: String!
-   email: String!
-   phone: Int!
-}
+    name: String!
+    password: String!
+    email: String!
+    phone: Int!
+    }
 
 input SignInUserInput {
     email: String!
@@ -28,6 +28,7 @@ input SignInUserInput {
 }
 
 type Query {
+    UserGraphGetInfo: User!
     UserGraphInfo: BasicResponse!
     UserGraphVerifyToken: UserPayload!
 }

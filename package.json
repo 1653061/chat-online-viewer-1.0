@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "relay-compiler && next dev",
-    "build": "next build",
+    "build": "relay-compiler && next build",
     "start": "next start",
     "relay": "relay-compiler"
   },

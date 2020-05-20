@@ -15,7 +15,6 @@ const MessageBody = ({}) => {
     useEffect(() => {
         async function getProfile() {
             const { UserGraphGetInfo } = await fetchQuery(environment(), GetInfo, {});
-            console.log(UserGraphGetInfo);
             setProfile(UserGraphGetInfo);
         }
         getProfile();

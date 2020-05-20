@@ -6,7 +6,8 @@
     "dev": "relay-compiler && next dev",
     "build": "relay-compiler && next build",
     "start": "next start",
-    "relay": "relay-compiler"
+    "relay": "relay-compiler",
+    "heroku-postbuild": "relay-compiler && next build"
   },
   "dependencies": {
     "antd": "^4.2.4",

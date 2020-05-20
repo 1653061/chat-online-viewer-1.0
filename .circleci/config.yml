@@ -40,4 +40,4 @@ workflows:
             - build-image
           filters:
             branches:
-              only: develop
+              only: master

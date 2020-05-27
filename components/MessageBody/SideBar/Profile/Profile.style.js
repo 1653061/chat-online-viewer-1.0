@@ -68,10 +68,6 @@ export const ProfileWrapper = styled.div`
             margin-right: 0;
         }
 
-        .btn {
-            float: right;
-        }
-
         .logo {
             display: inline-block;
             width: 40px;

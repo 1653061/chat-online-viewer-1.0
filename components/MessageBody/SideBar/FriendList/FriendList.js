@@ -1,6 +1,6 @@
 import React from 'react';
 import { List } from 'antd';
-import { FriendCard, FriendListWrapper, NewMessageCard } from './FriednList.style';
+import { FriendCard, FriendListWrapper, NewMessageCard } from './FriendList.style';
 
 const FriendList = ({newMessage, discardNewMessage}) => {
     const data = [
@@ -99,20 +99,30 @@ const FriendList = ({newMessage, discardNewMessage}) => {
     ];
 
     return <FriendListWrapper>
-        {newMessage ? <NewMessageCard>
-            <div className="content">New message</div>
-            <div className="buttonarea">
-                <button className="discard" onClick={discardNewMessage}>x</button>
-            </div>
-        </NewMessageCard> : null}
+        {newMessage ? <FriendCard newMessage >
+            <section className="avatarsection">
+                <img src="/avatar.png" className="avatar" />
+            </section>
+            <section className="info">
+                <div className="content">New message</div>
+                <div className="buttonarea">
+                    <button className="discard" onClick={discardNewMessage}>x</button>
+                </div>
+            </section>
+        </FriendCard> : null}
         <List 
             dataSource={data}
             split={false}
             renderItem={
                 item => (
                     <FriendCard onClick="" active={item.active}>
-                        <div className="name">{item.name}</div>
-                        <div>Alo Alo</div>
+                        <section className="avatarsection">
+                            <img src="/avatar.png" className="avatar" />
+                        </section>
+                        <section className="info">
+                            <div className="name">{item.name}</div>
+                            <div>Alo Alo</div>
+                        </section>
                     </FriendCard>
                 )
             }

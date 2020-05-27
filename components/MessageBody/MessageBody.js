@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SideBar from './SideBar';
 import MessageContainer from './MessageContainer';
-import { MBWrapper } from './MessageBody.style';
+import { MBWrapper, Title } from './MessageBody.style';
 import { Modal } from 'antd';
 import InfoIndicator from './InfoIndicator';
 import { fetchQuery } from 'react-relay';
@@ -11,6 +11,7 @@ import { GetInfo } from 'relay/graphql/UserGraph';
 const MessageBody = ({}) => {
     const [visible, setVisible] = useState(false);
     const [profile, setProfile] = useState({name: '', email : '', phone: ''});
+    const [newMessage, setNewMessage] = useState(false);
 
     useEffect(() => {
         async function getProfile() {
@@ -28,16 +29,31 @@ const MessageBody = ({}) => {
         setVisible(false);
     }
 
+    const createNewMessage = () => {
+        setNewMessage(true);
+    }
+
+    const discardNewMessage = () => {
+        setNewMessage(false);
+    }
+
+    const title = <Title>Profile</Title>
     return <MBWrapper>
-        <SideBar showModal={showModal} />
-        <MessageContainer />
+        <SideBar 
+            showModal={showModal} 
+            newMessage={newMessage} 
+            createNewMessage={createNewMessage} 
+            discardNewMessage={discardNewMessage}
+        />
+        <MessageContainer newMessage={newMessage}  />
         <Modal
-            title="Profile"
+            title={title}
             visible={visible}
             onCancel={closeModal}
             centered
             bodyStyle={{padding: '5px 20px'}}
             keyboard
+            className="Khai"
         >
             <InfoIndicator label="Id" content="alo" />
             <InfoIndicator label="Username" content={profile.name} />

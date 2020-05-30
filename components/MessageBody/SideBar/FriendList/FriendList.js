@@ -1,102 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { List } from 'antd';
+import MainContext from 'constants/MainContext';
 import { FriendCard, FriendListWrapper, NewMessageCard } from './FriendList.style';
 
-const FriendList = ({newMessage, discardNewMessage}) => {
-    const data = [
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Nhut',
-            active: true
-        },
-        {
-            name: 'Bach',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khai',
-            active: false
-        },
-        {
-            name: 'Khoa',
-            active: false
-        },
-    ];
+const FriendList = ({newMessage, discardNewMessage, rooms}) => {
+    const { currentUser } = useContext(MainContext);
+    const [userDatas, setUserDatas] = useState([]);
+
+    useEffect(() => {
+        if (rooms?.edges?.length && currentUser) {
+            const userDataList = rooms.edges.map((edge) => {
+                const { users } = edge.node;
+                const userFilters = users.filter((user) => user._id !== currentUser._id);
+                return ({
+                    name: userFilters[0].name,
+                    active: true,
+                })
+            })
+            setUserDatas(userDataList);
+        }
+    }, [currentUser, rooms])
 
     return <FriendListWrapper>
         {newMessage ? <FriendCard newMessage >
@@ -111,7 +34,7 @@ const FriendList = ({newMessage, discardNewMessage}) => {
             </section>
         </FriendCard> : null}
         <List 
-            dataSource={data}
+            dataSource={userDatas}
             split={false}
             renderItem={
                 item => (

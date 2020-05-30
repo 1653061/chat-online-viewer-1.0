@@ -1,20 +1,12 @@
 import { graphql } from 'react-relay';
 
-export const UserInfo = graphql`
-  query UserGraphInfoQuery {
-    UserGraphInfo {
-      message
-      statusCode
-    }
-  }
-`;
-
 export const CreateAccount = graphql`
   mutation UserGraphCreateAccountMutation($input: CreateUserInput!) {
     UserGraphSignUp(input: $input) {
       token
       refreshToken
       user {
+        _id
         name
         email
         phone
@@ -29,6 +21,7 @@ export const SignIn = graphql`
       token
       refreshToken
       user {
+        _id
         name
         email
         phone
@@ -43,6 +36,7 @@ export const VerifyToken = graphql`
       token
       refreshToken
       user {
+        _id
         name
         email
         phone
@@ -54,6 +48,7 @@ export const VerifyToken = graphql`
 export const GetInfo = graphql`
   query UserGraphGetInfoQuery {
     UserGraphGetInfo {
+      _id
       name
       email
       phone

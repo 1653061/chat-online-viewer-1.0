@@ -4,10 +4,37 @@ type BasicResponse {
 }
 
 type User {
+    _id: ID!
     email: String!
     name: String!
     phone: Int!
 }
+
+type PageInfo {
+    hasPreviousPage: Boolean
+    hasNextPage: Boolean
+    startCursor: String
+    endCursor: String
+}
+
+type RoomsConnection {
+    edges: [RoomEdge]!
+    pageInfo: PageInfo!
+    statusCode: Int!
+}
+
+type Room {
+    _id: ID!
+    lastMessage: String!
+    title: String!
+    users: [User]!
+}
+
+type RoomEdge {
+    cursor: String!
+    node: Room!
+}
+
 
 type UserPayload {
     token: String!
@@ -20,7 +47,7 @@ input CreateUserInput {
     password: String!
     email: String!
     phone: Int!
-    }
+}
 
 input SignInUserInput {
     email: String!
@@ -31,9 +58,11 @@ type Query {
     UserGraphGetInfo: User!
     UserGraphInfo: BasicResponse!
     UserGraphVerifyToken: UserPayload!
+    RoomGraphGetAllRoom(first: Float!, after: String!): RoomsConnection!
 }
 
 type Mutation {
     UserGraphSignUp(input: CreateUserInput!): UserPayload!
     UserGraphSignIn(input: SignInUserInput!): UserPayload!
+    RoomGraphCreateRoom(email: String!): BasicResponse!
 }

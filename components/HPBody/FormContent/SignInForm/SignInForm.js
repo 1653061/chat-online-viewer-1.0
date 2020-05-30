@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { commitMutation } from 'react-relay';
 import { Container } from './SignInForm.style';
-import { Formik, Form, useField } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import environment from 'relay/RelayEnvironment';
 import { SignIn } from 'relay/graphql/UserGraph';

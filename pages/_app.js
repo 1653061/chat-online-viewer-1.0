@@ -16,11 +16,11 @@ class MainApp extends App {
 
     const token = cookies(ctx).token;
     const refreshToken = cookies(ctx).refreshToken;
-    if (token && refreshToken) {
-      if (ctx.pathname === '/') {
-        redirectTo('/message', { res: ctx.res })
-      }
-    }
+    // if (token && refreshToken) {
+    //   if (ctx.pathname === '/') {
+    //     redirectTo('/message', { res: ctx.res })
+    //   }
+    // }
 
 
     return { pageProps, token, refreshToken  };

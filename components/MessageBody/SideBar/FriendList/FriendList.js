@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { List } from 'antd';
+import { createPaginationContainer } from 'react-relay';
+import { GetAllRoomFragment, GetAllRoomPaging } from 'relay/graphql/RoomGraph';
 import MainContext from 'constants/MainContext';
 import { FriendCard, FriendListWrapper, NewMessageCard } from './FriendList.style';
 
@@ -8,8 +10,8 @@ const FriendList = ({newMessage, discardNewMessage, rooms}) => {
     const [userDatas, setUserDatas] = useState([]);
 
     useEffect(() => {
-        if (rooms?.edges?.length && currentUser) {
-            const userDataList = rooms.edges.map((edge) => {
+        if (rooms?.allRooms?.edges?.length && currentUser) {
+            const userDataList = rooms.allRooms.edges.map((edge) => {
                 const { users } = edge.node;
                 const userFilters = users.filter((user) => user._id !== currentUser._id);
                 return ({
@@ -53,4 +55,22 @@ const FriendList = ({newMessage, discardNewMessage, rooms}) => {
     </FriendListWrapper>
 }
 
-export default FriendList;
+export default createPaginationContainer(FriendList, { rooms: GetAllRoomFragment}, {
+    direction: 'forward',
+    getConnectionFromProps(props) {
+        return props.rooms && props.rooms.allRooms;
+    },
+    getFragmentVariables(prevVars, totalCount) {
+        return {
+          ...prevVars,
+          count: totalCount,
+        };
+    },
+    getVariables(props, {count, cursor}, fragmentVariables) {
+        return {
+          count,
+          cursor,
+        };
+      },
+    query: GetAllRoomPaging,
+});

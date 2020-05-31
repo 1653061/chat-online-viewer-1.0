@@ -17,6 +17,10 @@ type PageInfo {
     endCursor: String
 }
 
+type RoomList {
+    allRooms(first: Float!, after: String!): RoomsConnection!
+}
+
 type RoomsConnection {
     edges: [RoomEdge]!
     pageInfo: PageInfo!
@@ -25,6 +29,7 @@ type RoomsConnection {
 
 type Room {
     _id: ID!
+    id: ID!
     lastMessage: String!
     title: String!
     users: [User]!
@@ -40,6 +45,11 @@ type UserPayload {
     token: String!
     refreshToken: String
     user: User!
+}
+
+type CreatedConnectionPayload {
+    basicResponse: BasicResponse!
+    room: RoomEdge!
 }
 
 input CreateUserInput {
@@ -58,11 +68,11 @@ type Query {
     UserGraphGetInfo: User!
     UserGraphInfo: BasicResponse!
     UserGraphVerifyToken: UserPayload!
-    RoomGraphGetAllRoom(first: Float!, after: String!): RoomsConnection!
+    RoomGraphGetAllRoom: RoomList!
 }
 
 type Mutation {
     UserGraphSignUp(input: CreateUserInput!): UserPayload!
     UserGraphSignIn(input: SignInUserInput!): UserPayload!
-    RoomGraphCreateRoom(email: String!): BasicResponse!
+    RoomGraphCreateRoom(email: String!): CreatedConnectionPayload!
 }

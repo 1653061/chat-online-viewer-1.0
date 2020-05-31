@@ -5,11 +5,11 @@ import ChatArea from './ChatArea';
 import ChatComposer from './ChatComposer';
 import SearchBar from './SearchBar';
 
-const MessageContainter = ({newMessage}) => {
+const MessageContainter = ({newMessage, activeRoom}) => {
     return <MCWrapper>
         {newMessage ? <SearchBar /> : 
-            <><ChatTitle/>
-            <ChatArea />
+            <><ChatTitle activeUser={activeRoom.activeUser} />
+            <ChatArea activeRoom={activeRoom.roomId} />
             <ChatComposer /></>
         }
     </MCWrapper>    

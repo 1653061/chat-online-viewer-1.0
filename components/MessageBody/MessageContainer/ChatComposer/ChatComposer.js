@@ -4,11 +4,16 @@ import MessageInput from './MessageInput';
 import { Formik, Form } from 'formik';
 
 const ChatComposer = ({}) => {
+    const sendMessage = ({}) => {
+        console.log('Code send message o day');
+    }
+
     return <ChatComposerWrapper>
         <Formik
             initialValues={{
                 textmessage: '',
             }}
+            onSubmit={sendMessage}
         >
             <Form>
                 <div className="chatcomposer">

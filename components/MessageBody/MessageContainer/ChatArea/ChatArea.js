@@ -3,7 +3,7 @@ import { ChatAreaWrapper } from './ChatArea.style';
 import { List } from 'antd';
 import Message  from './Message';
 
-const ChatArea = ({}) => {
+const ChatArea = ({roomId}) => {
     const messages = [
         {
             data: {

@@ -28,7 +28,6 @@ export const MessageWrapper = styled.div`
         justify-content: flex-end;
     }
     
-    
     .message .bubble-container .bubble {
         margin: 1px 0px;
         background: #f4f4f8;

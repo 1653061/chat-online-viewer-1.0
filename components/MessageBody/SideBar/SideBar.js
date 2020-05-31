@@ -6,7 +6,7 @@ import environment from 'relay/RelayEnvironment';
 import Profile from './Profile';
 import FriendList from './FriendList';
 
-const SideBar = ({showModal, newMessage, createNewMessage, discardNewMessage}) => {
+const SideBar = ({showModal, newMessage, createNewMessage, discardNewMessage, getActiveRoom}) => {
     return <SBWrapper>
         <Profile 
             showModal={showModal} 
@@ -20,6 +20,7 @@ const SideBar = ({showModal, newMessage, createNewMessage, discardNewMessage}) =
             newMessage={newMessage} 
             discardNewMessage={discardNewMessage}
             rooms={props.RoomGraphGetAllRoom}
+            getActiveRoom={getActiveRoom}
         /> 
         }}/>
     </SBWrapper>

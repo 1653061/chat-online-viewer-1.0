@@ -12,6 +12,7 @@ const MessageBody = ({}) => {
     const [visible, setVisible] = useState(false);
     const [profile, setProfile] = useState({name: '', email : '', phone: ''});
     const [newMessage, setNewMessage] = useState(false);
+    const [activeRoom, setActiveRoom] = useState(null);
 
     useEffect(() => {
         async function getProfile() {
@@ -37,6 +38,13 @@ const MessageBody = ({}) => {
         setNewMessage(false);
     }
 
+    const getActiveRoom = (roomId, activeUser) => {
+        setActiveRoom({
+            roomId,
+            activeUser
+        });
+    }
+
     const title = <Title>Profile</Title>
     return <MBWrapper>
         <SideBar 
@@ -44,8 +52,9 @@ const MessageBody = ({}) => {
             newMessage={newMessage} 
             createNewMessage={createNewMessage} 
             discardNewMessage={discardNewMessage}
+            getActiveRoom={getActiveRoom}
         />
-        <MessageContainer newMessage={newMessage}  />
+        <MessageContainer newMessage={newMessage} activeRoom={activeRoom} />
         <Modal
             title={title}
             visible={visible}

@@ -5,7 +5,7 @@ import { GetAllRoomFragment, GetAllRoomPaging } from 'relay/graphql/RoomGraph';
 import MainContext from 'constants/MainContext';
 import { FriendCard, FriendListWrapper, NewMessageCard } from './FriendList.style';
 
-const FriendList = ({newMessage, discardNewMessage, rooms}) => {
+const FriendList = ({newMessage, discardNewMessage, rooms, getActiveRoom}) => {
     const { currentUser } = useContext(MainContext);
     const [userDatas, setUserDatas] = useState([]);
 
@@ -15,6 +15,7 @@ const FriendList = ({newMessage, discardNewMessage, rooms}) => {
                 const { users } = edge.node;
                 const userFilters = users.filter((user) => user._id !== currentUser._id);
                 return ({
+                    roomId: userFilters[0]._id,
                     name: userFilters[0].name,
                     active: true,
                 })
@@ -40,7 +41,7 @@ const FriendList = ({newMessage, discardNewMessage, rooms}) => {
             split={false}
             renderItem={
                 item => (
-                    <FriendCard onClick="" active={item.active}>
+                    <FriendCard onClick={() => getActiveRoom(item.roomId, item.name)} active={item.active}>
                         <section className="avatarsection">
                             <img src="/avatar.png" className="avatar" />
                         </section>

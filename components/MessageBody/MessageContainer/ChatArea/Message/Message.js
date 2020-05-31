@@ -6,8 +6,6 @@ const Message = props => {
     const {
         data,
         isMine,
-        startsSequence,
-        endsSequence,
         showTimestamp
     } = props.mydata;
 

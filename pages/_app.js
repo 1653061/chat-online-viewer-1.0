@@ -48,6 +48,7 @@ class MainApp extends App {
     const { Component, pageProps } = this.props;
     const contextValue = {
       currentUser: this.state.currentUser,
+      setCurrentUser: (currentUser) => this.setState({ currentUser }),
     }
     return (
       <MainContext.Provider value={contextValue}>

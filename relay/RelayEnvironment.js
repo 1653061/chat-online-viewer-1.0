@@ -21,7 +21,12 @@ function fetchQuery (
       query: operation.text,
       variables
     })
-  }).then(response => response.json())
+  }).then(response => response.json()).then(responeJson => {
+    if (responeJson.errors) {
+      throw responeJson.errors[0].message;
+    }
+    return responeJson
+  })
 }
 
 export default function initEnvironment ({ records = {} } = {}) {

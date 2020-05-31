@@ -5,7 +5,7 @@ import { GetAllRoomFragment, GetAllRoomPaging } from 'relay/graphql/RoomGraph';
 import MainContext from 'constants/MainContext';
 import { FriendCard, FriendListWrapper, NewMessageCard } from './FriendList.style';
 
-const FriendList = ({newMessage, discardNewMessage, rooms, getActiveRoom}) => {
+const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom}) => {
     const { currentUser } = useContext(MainContext);
     const [userDatas, setUserDatas] = useState([]);
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { commitMutation } from 'react-relay';
 import { Container } from './SignInForm.style';
 import { Formik, Form } from 'formik';
@@ -9,8 +9,11 @@ import TextInput from 'components/Form/TextInput';
 import Button from 'components/Button';
 import Router from 'next/router';
 import GoogleLogin from 'react-google-login';
+import MainContext from 'constants/MainContext';
+
 
 const SignInForm = ({ }) => {
+  const { setCurrentUser } = useContext(MainContext);
   const [noti, setNoti] = useState(false);
 
   const signIn = ({
@@ -35,6 +38,7 @@ const SignInForm = ({ }) => {
             document.cookie = `refreshToken=${refreshToken}`;
             localStorage.setItem('token', token);
             localStorage.setItem('refreshToken', refreshToken);
+            setCurrentUser(user);
             Router.push('/message');
           }
         },

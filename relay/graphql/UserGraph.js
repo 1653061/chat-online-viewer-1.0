@@ -55,3 +55,25 @@ export const GetInfo = graphql`
     }
   }
 `;
+
+export const VerifyEmailToken = graphql`
+  mutation UserGraphVerifyEmailTokenMutation($input: EmailVerifyTokenInput!) {
+    UserGraphVerifyEmailToken(input: $input) {
+      isVerified
+    }
+  }
+`
+
+export const SignInWithGoogle = graphql`
+  mutation UserGraphSignInWithGoogleMutation($input: GoogleSigninInput!) {
+    UserGraphSignInWithGoogle(input: $input) {
+      token
+      refreshToken
+      user {
+        name
+        email
+        phone
+      }
+    }
+  }
+`

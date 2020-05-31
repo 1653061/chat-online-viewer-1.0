@@ -7,7 +7,7 @@ type User {
     _id: ID!
     email: String!
     name: String!
-    phone: Int!
+    phone: String
 }
 
 type PageInfo {
@@ -52,6 +52,10 @@ type CreatedConnectionPayload {
     room: RoomEdge!
 }
 
+type EmailVerifyTokenPayload {
+    isVerified: Boolean!
+}
+
 input CreateUserInput {
     name: String!
     password: String!
@@ -62,6 +66,15 @@ input CreateUserInput {
 input SignInUserInput {
     email: String!
     password: String!
+}
+
+input EmailVerifyTokenInput {
+    token: String!
+}
+
+input GoogleSigninInput {
+    email: String!
+    name: String!
 }
 
 type Query {
@@ -75,4 +88,6 @@ type Mutation {
     UserGraphSignUp(input: CreateUserInput!): UserPayload!
     UserGraphSignIn(input: SignInUserInput!): UserPayload!
     RoomGraphCreateRoom(email: String!): CreatedConnectionPayload!
+    UserGraphVerifyEmailToken(input: EmailVerifyTokenInput!): EmailVerifyTokenPayload!
+    UserGraphSignInWithGoogle(input: GoogleSigninInput!): UserPayload!
 }

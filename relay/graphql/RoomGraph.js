@@ -77,3 +77,60 @@ export const CreateConnection = graphql`
     }
   }
 `;
+
+export const CreateMessage = graphql`
+  mutation RoomGraphCreateMessageMutation($message: String!, $roomId: String!) {
+    RoomGraphAddNewChat(message: $message, roomId: $roomId) {
+      message
+      statusCode
+    }
+  }
+`;
+
+export const GetAllMessageFragment = graphql`
+fragment RoomGraph_GetAllMessageFragment on ChatList
+@argumentDefinitions(
+    count: {type: "Float!", defaultValue: 10}
+    cursor: {type: "String!"}
+) {
+  allChat(
+        last: $count
+        before: $cursor
+    ) @connection(key: "GetAllRoomChatList_allChat", filters: []) {
+      edges {
+        cursor
+        node {
+          _id
+          id
+          ownerId
+          message
+          ownerName
+          createdAt
+        }
+      }
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      statusCode
+    }
+  }
+`;
+
+export const GetAllMessage = graphql`
+query RoomGraphGetAllMessageQuery ($count: Float!, $cursor: String!, $roomId: String!) {
+  RoomGraphGetAllMessage(roomId: $roomId) {
+      ...RoomGraph_GetAllMessageFragment @arguments(count: $count, cursor: $cursor)
+    }
+  }
+`;
+
+export const GetAllMessagePaging = graphql`
+query RoomGraphGetAllMessagePagingQuery($count: Float!, $cursor: String!, $roomId: String!) {
+  RoomGraphGetAllMessage(roomId: $roomId) {
+    ...RoomGraph_GetAllMessageFragment @arguments(count: $count, cursor: $cursor)
+  }
+}
+`;

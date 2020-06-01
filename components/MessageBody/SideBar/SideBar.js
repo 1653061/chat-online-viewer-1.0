@@ -12,7 +12,7 @@ const SideBar = ({showModal, newMessage, createNewMessage, discardNewMessage, ge
             showModal={showModal} 
             createNewMessage={createNewMessage} 
         />
-        <QueryRenderer environment={environment()} query={GetAllRoom} variables={{count: 1, cursor: ''}} render={({ error, props }) => {
+        <QueryRenderer environment={environment()} query={GetAllRoom} variables={{count: 10, cursor: ''}} render={({ error, props }) => {
             if (!props || error) {
                 return null;
             }

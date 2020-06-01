@@ -12,11 +12,12 @@ const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom}
     useEffect(() => {
         if (rooms?.allRooms?.edges?.length && currentUser) {
             const userDataList = rooms.allRooms.edges.map((edge) => {
-                const { users } = edge.node;
+                const { users, _id, lastMessage } = edge.node;
                 const userFilters = users.filter((user) => user._id !== currentUser._id);
                 return ({
-                    roomId: userFilters[0]._id,
+                    roomId: _id,
                     name: userFilters[0].name,
+                    lastMessage,
                     active: true,
                 })
             })
@@ -47,7 +48,7 @@ const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom}
                         </section>
                         <section className="info">
                             <div className="name">{item.name}</div>
-                            <div>Alo Alo</div>
+                            <div>{item.lastMessage}</div>
                         </section>
                     </FriendCard>
                 )

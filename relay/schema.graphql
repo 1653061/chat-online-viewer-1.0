@@ -21,6 +21,7 @@ type RoomList {
     allRooms(first: Float!, after: String!): RoomsConnection!
 }
 
+
 type RoomsConnection {
     edges: [RoomEdge]!
     pageInfo: PageInfo!
@@ -38,6 +39,31 @@ type Room {
 type RoomEdge {
     cursor: String!
     node: Room!
+}
+
+type ChatList {
+    allChat(last: Float!, before: String!): ChatConnection!
+}
+
+
+type ChatConnection {
+    edges: [ChatEdge]!
+    pageInfo: PageInfo!
+    statusCode: Int!
+}
+
+type Chat {
+    _id: ID!
+    id: ID!
+    ownerId: String!
+    message: String!
+    ownerName: String!
+    createdAt: String!
+}
+
+type ChatEdge {
+    cursor: String!
+    node: Chat!
 }
 
 
@@ -82,6 +108,7 @@ type Query {
     UserGraphInfo: BasicResponse!
     UserGraphVerifyToken: UserPayload!
     RoomGraphGetAllRoom: RoomList!
+    RoomGraphGetAllMessage(roomId: String!): ChatList!
 }
 
 type Mutation {
@@ -90,4 +117,5 @@ type Mutation {
     RoomGraphCreateRoom(email: String!): CreatedConnectionPayload!
     UserGraphVerifyEmailToken(input: EmailVerifyTokenInput!): EmailVerifyTokenPayload!
     UserGraphSignInWithGoogle(input: GoogleSigninInput!): UserPayload!
+    RoomGraphAddNewChat(message: String!, roomId: String!): BasicResponse!
 }

@@ -8,8 +8,8 @@ import SearchBar from './SearchBar';
 const MessageContainter = ({newMessage, activeRoom}) => {
     return <MCWrapper>
         {newMessage ? <SearchBar /> : 
-            <><ChatTitle activeUser={activeRoom.activeUser} />
-            <ChatArea activeRoom={activeRoom.roomId} />
+            <><ChatTitle activeUser={activeRoom ? activeRoom.activeUser : null} />
+            <ChatArea activeRoom={activeRoom ? activeRoom.roomId : null} />
             <ChatComposer /></>
         }
     </MCWrapper>    

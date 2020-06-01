@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import SideBar from './SideBar';
 import MessageContainer from './MessageContainer';
-import { MBWrapper, Title } from './MessageBody.style';
+import { MBWrapper, Title, LogOut } from './MessageBody.style';
 import { Modal } from 'antd';
 import InfoIndicator from './InfoIndicator';
 import { fetchQuery } from 'react-relay';
 import environment from 'relay/RelayEnvironment';
 import { GetInfo } from 'relay/graphql/UserGraph';
+import Router from 'next/router';
 
 const MessageBody = ({}) => {
     const [visible, setVisible] = useState(false);
@@ -45,6 +46,14 @@ const MessageBody = ({}) => {
         });
     }
 
+    const logOut = () => {
+        document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';
+        document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        Router.push('/');
+    }
+
     const title = <Title>Profile</Title>
     return <MBWrapper>
         <SideBar 
@@ -67,7 +76,8 @@ const MessageBody = ({}) => {
             <InfoIndicator label="Id" content="alo" />
             <InfoIndicator label="Username" content={profile.name} />
             <InfoIndicator label="Email" content={profile.email} />
-            <InfoIndicator label="Phone" content={profile.phone} lastItem={true} />
+            <InfoIndicator label="Phone" content={profile.phone} />
+            <LogOut onClick={logOut}>Logout</LogOut>
         </Modal>
     </MBWrapper>
 }

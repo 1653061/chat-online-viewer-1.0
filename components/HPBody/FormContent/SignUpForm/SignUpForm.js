@@ -10,7 +10,10 @@ import Button from 'components/Button';
 import Router from 'next/router';
 
 const SignUpForm = ({ }) => {
-  const [noti, setNoti] = useState(false);
+  const [noti, setNoti] = useState({
+    isNotified: false,
+    message: null
+  });
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
   const createAccount = ({
@@ -44,9 +47,15 @@ const SignUpForm = ({ }) => {
         
       },
       onError: (err) => {
-        setNoti(true);
+        setNoti({
+          isNotified: true,
+          message: err
+        });
         setTimeout(() => {
-          setNoti(false)
+          setNoti({
+            isNotified: false,
+            messgae: null
+          })
         }, 5000);
       },
     });
@@ -54,7 +63,9 @@ const SignUpForm = ({ }) => {
 
   return (
     <Container>
-      {noti ? <div className="noti"><p className="content">Email was registed!</p></div> : null}
+      {noti.isNotified ? <div className="noti">
+        <p className="content">{noti.message}</p>
+      </div> : null}
       <Formik
         initialValues={{
           fullname: '',

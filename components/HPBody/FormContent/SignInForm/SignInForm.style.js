@@ -5,7 +5,6 @@ export const Container = styled.div`
     .noti {
         background-color: rgba(255,0,0, .3);
         width: 100%;
-        height: 40px;
         color: rgb(255,0,0);
         border: 1px solid rgb(255,0,0);
         border-radius: 15px;

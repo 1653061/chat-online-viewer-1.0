@@ -14,12 +14,21 @@ import MainContext from 'constants/MainContext';
 
 const SignInForm = ({ }) => {
   const { setCurrentUser } = useContext(MainContext);
-  const [noti, setNoti] = useState(false);
+  const [noti, setNoti] = useState({
+    isNotified: false, 
+    message: null
+  });
 
   const signIn = ({
       password,
       email
     }) => {
+      if (noti.isNotified === true) {
+        setNoti({
+          isNotified: false,
+          message: null
+        })
+      }
       commitMutation(environment(), {
         mutation: SignIn,
         variables: {
@@ -43,10 +52,18 @@ const SignInForm = ({ }) => {
           }
         },
         onError: (err) => {
-          setNoti(true);
-          setTimeout(() => {
-            setNoti(false)
-          }, 5000);
+          setNoti({
+            isNotified: true,
+            message: err
+          });
+          if (err !== 'Account is not verified') {
+            setTimeout(() => {
+              setNoti({
+                isNotified: false,
+                messgae: null
+              })
+            }, 5000);
+          }
         }
       });
     };
@@ -70,20 +87,23 @@ const SignInForm = ({ }) => {
             document.cookie = `refreshToken=${refreshToken}`;
             localStorage.setItem('token', token);
             localStorage.setItem('refreshToken', refreshToken);
+            setCurrentUser(user);
             Router.push('/message');
           }
         },
         onError: (err) => {
-          setNoti(true);
-          setTimeout(() => {
-            setNoti(false)
-          }, 5000);
+          console.log(err);
         }
       });
     };
 
     return <Container>
-      {noti ? <div className="noti"><p className="content">Email or password is not correct!</p></div> : null}
+      {noti.isNotified ? <div className="noti">
+        <p className="content">
+          {noti.message}.
+          {noti.message === 'Account is not verified' ? <a> Click here to resend activation code</a> : null}
+        </p>
+      </div> : null}
       <Formik
           initialValues={{
               email: '',
@@ -127,7 +147,6 @@ const SignInForm = ({ }) => {
           }
         }
         onFailure={err => {
-          console.log('Error');
           console.log(err)
           }
         }

@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 
 export const MCWrapper = styled.div`
-    flex: 3;
-    width: 100%:
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+`;
+
+export const NoMessage = styled.div`
+    width: 100%;
     height: 100%;
 `

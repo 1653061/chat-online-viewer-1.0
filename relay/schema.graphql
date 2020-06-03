@@ -112,10 +112,14 @@ type Query {
 }
 
 type Mutation {
-    UserGraphSignUp(input: CreateUserInput!): UserPayload!
+    UserGraphSignUp(input: CreateUserInput!): BasicResponse!
     UserGraphSignIn(input: SignInUserInput!): UserPayload!
     RoomGraphCreateRoom(email: String!): CreatedConnectionPayload!
     UserGraphVerifyEmailToken(input: EmailVerifyTokenInput!): EmailVerifyTokenPayload!
     UserGraphSignInWithGoogle(input: GoogleSigninInput!): UserPayload!
     RoomGraphAddNewChat(message: String!, roomId: String!): BasicResponse!
+}
+
+type Subscription {
+    chatAdded(roomId: String!): ChatEdge!
 }

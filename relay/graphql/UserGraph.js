@@ -3,14 +3,8 @@ import { graphql } from 'react-relay';
 export const CreateAccount = graphql`
   mutation UserGraphCreateAccountMutation($input: CreateUserInput!) {
     UserGraphSignUp(input: $input) {
-      token
-      refreshToken
-      user {
-        _id
-        name
-        email
-        phone
-      }
+      message
+      statusCode
     }
   }
 `;

@@ -36,15 +36,6 @@ const SignUpForm = ({ }) => {
         if (errors) {
           console.log(errors);
         }
-        else {
-          const { refreshToken, token, user } = UserGraphSignUp;
-          document.cookie = `token=${token}`;
-          document.cookie = `refreshToken=${refreshToken}`;
-          localStorage.setItem('token', token);
-          localStorage.setItem('refreshToken', refreshToken);
-          Router.push('/message');
-        }
-        
       },
       onError: (err) => {
         setNoti({

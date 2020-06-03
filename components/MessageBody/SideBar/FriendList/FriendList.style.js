@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const FriendListWrapper = styled.div`
     height: 92%;
     overflow: auto;
+    min-width: 300px;
 `
 
 export const FriendCard = styled.div`

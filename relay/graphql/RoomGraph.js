@@ -134,3 +134,19 @@ query RoomGraphGetAllMessagePagingQuery($count: Float!, $cursor: String!, $roomI
   }
 }
 `;
+
+export const SubscriptionNewMessage = graphql`
+  subscription RoomGraphChatAddedSubscription($roomId: String!) {
+    chatAdded(roomId: $roomId) {
+        cursor
+        node {
+          _id
+          id
+          ownerId
+          message
+          ownerName
+          createdAt
+        }
+    }
+  }
+`;

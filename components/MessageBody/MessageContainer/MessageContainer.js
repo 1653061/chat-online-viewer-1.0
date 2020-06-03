@@ -2,7 +2,7 @@ import React from 'react';
 import { QueryRenderer } from 'react-relay';
 import { GetAllMessage } from 'relay/graphql/RoomGraph';
 import environment from 'relay/RelayEnvironment';
-import { MCWrapper } from './MessageContainer.style';
+import { MCWrapper, NoMessage } from './MessageContainer.style';
 import ChatTitle from './ChatTitle';
 import ChatArea from './ChatArea';
 import ChatComposer from './ChatComposer';
@@ -13,13 +13,16 @@ const MessageContainter = ({newMessage, activeRoom}) => {
         {newMessage ? <SearchBar /> : 
             <><ChatTitle activeUser={activeRoom ? activeRoom.activeUser : null} />
             {
-                activeRoom && activeRoom.roomId &&
+                activeRoom && activeRoom.roomId ?
                 <QueryRenderer environment={environment()} query={GetAllMessage} variables={{count: 10, cursor: '', roomId: activeRoom.roomId}} render={({ error, props }) => {
-                    if (!props || error) {
+                    if (error) {
                         return null;
                     }
+                    if (!props) {
+                        return <NoMessage>Loading...</NoMessage>
+                    }
                     return <ChatArea activeRoom={activeRoom.roomId} messages={props.RoomGraphGetAllMessage}/>
-                }}/>
+                }}/> : <NoMessage></NoMessage>
             }
             <ChatComposer activeRoom={activeRoom ? activeRoom.roomId : null}/></>
         }

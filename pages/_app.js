@@ -37,10 +37,19 @@ class MainApp extends App {
   async componentDidMount() {
     const { token, refreshToken } = this.props;
     if (token && refreshToken) {
-      const { UserGraphVerifyToken: { token: newToken, user } } = await fetchQuery(environment(), VerifyToken, {});
-      document.cookie = `token=${newToken}`;
-      localStorage.setItem('token', newToken);
-      this.setState({ currentUser: user });
+      try {
+        const { UserGraphVerifyToken: { token: newToken, user } } = await fetchQuery(environment(), VerifyToken, {});
+        document.cookie = `token=${newToken}`;
+        localStorage.setItem('token', newToken);
+        this.setState({ currentUser: user });
+      } catch(e) {
+        if (e === 'Authentication Error') {
+          document.cookie = `token=; refreshToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+          localStorage.removeItem('token');
+          localStorage.removeItem('refreshToken');
+          redirectTo('/');
+        }
+      }
     }
   }
 

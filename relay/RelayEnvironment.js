@@ -1,7 +1,24 @@
 import { Environment, Network, RecordSource, Store } from 'relay-runtime'
+import { execute } from 'apollo-link'
+import { SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transport-ws'
+import { WebSocketLink } from 'apollo-link-ws'
 import fetch from 'isomorphic-unfetch'
+import ws from 'websocket'
 
 let relayEnvironment = null
+
+const subscriptionClient = new SubscriptionClient('ws://localhost:4200/graphql', {
+  reconnect: true
+}, ws.client)
+
+const subscriptionLink = process.browser ? new WebSocketLink(subscriptionClient) : null;
+
+const networkSubscriptions = (operation, variables) =>
+  execute(subscriptionLink, {
+    query: operation.text,
+    variables,
+    operationName: operation.name,
+  })
 
 function fetchQuery (
     operation,
@@ -30,7 +47,7 @@ function fetchQuery (
 }
 
 export default function initEnvironment ({ records = {} } = {}) {
-  const network = Network.create(fetchQuery)
+  const network = Network.create(fetchQuery, networkSubscriptions)
   const store = new Store(new RecordSource(records))
 
   if (!process.browser) {

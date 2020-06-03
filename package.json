@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "antd": "^4.2.4",
+    "apollo-link": "^1.2.14",
+    "apollo-link-ws": "^1.0.20",
     "formik": "^2.1.4",
     "isomorphic-unfetch": "^3.0.0",
     "moment": "^2.26.0",
@@ -22,6 +24,8 @@
     "react-relay": "^9.1.0",
     "relay-runtime": "^9.1.0",
     "styled-components": "^5.1.0",
+    "subscriptions-transport-ws": "^0.9.16",
+    "websocket": "^1.0.31",
     "yup": "^0.28.5"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@ import { createPaginationContainer, requestSubscription } from 'react-relay';
 import { GetAllMessageFragment, GetAllMessagePaging, SubscriptionNewMessage } from 'relay/graphql/RoomGraph';
 import { ROOT_ID, ConnectionHandler } from 'relay-runtime';
 import MainContext from 'constants/MainContext';
-import { List } from 'antd';
+import { List, Spin } from 'antd';
 import environment from 'relay/RelayEnvironment';
 import Message  from './Message';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -13,8 +13,11 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
     const { currentUser } = useContext(MainContext);
     const [messagesData, setMessagesData] = useState([]);
     const messagesEndRef = useRef();
+    const listRef = useRef();
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+    const [outOfData, setOutOfData] = useState(false);
+    const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
 
     useEffect(() => {
         console.log("ChatArea -> messages", messages)
@@ -74,13 +77,6 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
             }
         }
     }, [activeRoom])
-    const messagesEndRef = useRef(null);
-
-    /*FOR PAGING
-    if (relay.hasMore()) {
-        relay.loadMore(10, error => console.log(error));
-    }
-    */
 
     const scrollToBottom = () => {
         messagesEndRef.current.scrollIntoView({
@@ -90,35 +86,44 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
         });
     }
 
-    useEffect(scrollToBottom, []);
-
     useEffect(() => {
-        scrollToBottom();
-    }
-    , [messages]);
+        listRef.current.onscroll = () => {
+            if (listRef.current.scrollTop === 0) {
+                if (relay.hasMore()) {
+                    setLoading(true);
+                    relay.loadMore(10, error => console.log(error));
+                }
+                else {
+                    setLoading(false);
+                    setOutOfData(true);
+                }
+            }
+        }
+    }, []);
 
-    return <ChatAreaWrapper>
+    const lastMessage = () => {
+        scrollToBottom();
+        setShouldScrollToBottom(false);
+    }
+
+    return <ChatAreaWrapper ref={listRef}>
+        {/* {messagesData.length === 0 && <div>Type something to begin chat</div>} */}
+        {outOfData && <div>Out of data</div>}
+        {loading && <div><Spin /></div>}
         {
             messagesData && messagesData.length &&
-                <InfiniteScroll
-                    initialLoad={false}
-                    pageStart={0}
-                    loadMore={refetch}
-                    hasMore={true}
-                    useWindow={false}
-                    pullDownToRefresh={true}
-                >
                     <List 
                         dataSource={messagesData}
                         split={false}
                         renderItem={
-                            item => {
-                                scrollToBottom();
+                            (item, index) => {
+                                if (index === messagesData.length - 1 && shouldScrollToBottom) {
+                                    return <Message mydata={item} lastMessage={lastMessage} />
+                                }
                                 return <Message mydata={item} />
                             }
                         }
                     />
-                </InfiniteScroll> 
         }
         <div ref={messagesEndRef} />
     </ChatAreaWrapper>

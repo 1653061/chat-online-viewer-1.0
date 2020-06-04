@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import { MessageWrapper } from './Message.style';
 
@@ -10,6 +10,12 @@ const Message = props => {
     } = props.mydata;
 
     const friendlyTimestamp = moment(data.timestamp).format('LLLL');
+    
+    useEffect(() => {
+        if (props.lastMessage) {
+            props.lastMessage();
+        }
+    }, []);
 
     return <MessageWrapper>
             <div className={[
@@ -29,6 +35,7 @@ const Message = props => {
                 </div>
                 </div>
             </div>
+
         </MessageWrapper>
 }
 

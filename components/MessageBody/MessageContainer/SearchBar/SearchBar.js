@@ -16,7 +16,7 @@ const SearchBar = ({}) => {
   });
 
   return <SearchBarWrapper>
-    <div class="tablecell">
+    <div className="tablecell">
       {noti.isNotified ? <div className="notiwrapper"><div className="noti">
           <p className="content">
             {noti.message}.

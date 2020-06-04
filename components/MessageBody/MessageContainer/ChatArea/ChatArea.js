@@ -7,10 +7,14 @@ import MainContext from 'constants/MainContext';
 import { List } from 'antd';
 import environment from 'relay/RelayEnvironment';
 import Message  from './Message';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const ChatArea = ({ activeRoom, messages = [], relay }) => {
     const { currentUser } = useContext(MainContext);
     const [messagesData, setMessagesData] = useState([]);
+    const messagesEndRef = useRef();
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
         console.log("ChatArea -> messages", messages)
@@ -19,11 +23,11 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                 const { createdAt, ownerId, message } = edge.node;
                 return ({
                     data: {
-                        timestamp: new Date(createdAt),
+                        timestamp: new Date(parseInt(createdAt)),
                         message,
                     },
                     isMine: currentUser._id === ownerId,
-                    showTimestamp: true,
+                    showTimestamp: false,
                 })
             })
             setMessagesData(messagesDataList);
@@ -39,14 +43,14 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                 },
                 onCompleted: ({ chatAdded }, errors) => {
                     if (errors) {
-                      console.log(errors);
+                        console.log(errors);
                     }
                     else {
-                      console.log("SearchBar -> CreateConnection", chatAdded)
+                        console.log("SearchBar -> CreateConnection", chatAdded)
                     }
                     
-                  },
-                  updater: proxyStore => {
+                },
+                updater: proxyStore => {
                     const createConnection = proxyStore.getRootField('chatAdded');
                     console.log("ChatArea -> createConnection", createConnection)
                     const root = proxyStore.get(ROOT_ID);
@@ -60,9 +64,9 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                             createConnection,
                             'ChatList',
                         );
-                      ConnectionHandler.insertEdgeAfter(connection, edge)
+                        ConnectionHandler.insertEdgeAfter(connection, edge)
                     }
-                  },
+                },
             })
 
             return () => {
@@ -79,7 +83,11 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
     */
 
     const scrollToBottom = () => {
-        messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+        messagesEndRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'center'
+        });
     }
 
     useEffect(() => {
@@ -88,20 +96,33 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
 
     useEffect(scrollToBottom, []);
 
-    useEffect(scrollToBottom, [messages]);
+    useEffect(() => {
+        scrollToBottom();
+    }
+    , [messages]);
 
     return <ChatAreaWrapper>
         {
             messagesData && messagesData.length &&
-            <List 
-                dataSource={messagesData}
-                split={false}
-                renderItem={
-                    item => (
-                        <Message mydata={item} />
-                    )
-                }
-            />
+                <InfiniteScroll
+                    initialLoad={false}
+                    pageStart={0}
+                    loadMore={refetch}
+                    hasMore={true}
+                    useWindow={false}
+                    pullDownToRefresh={true}
+                >
+                    <List 
+                        dataSource={messagesData}
+                        split={false}
+                        renderItem={
+                            item => {
+                                scrollToBottom();
+                                return <Message mydata={item} />
+                            }
+                        }
+                    />
+                </InfiniteScroll> 
         }
         <div ref={messagesEndRef} />
     </ChatAreaWrapper>
@@ -114,16 +135,16 @@ export default createPaginationContainer(ChatArea, { messages: GetAllMessageFrag
     },
     getFragmentVariables(prevVars, totalCount) {
         return {
-          ...prevVars,
-          count: totalCount,
+            ...prevVars,
+            count: totalCount,
         };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
         return {
-          count,
-          cursor,
-          roomId: props.activeRoom,
+            count,
+            cursor,
+            roomId: props.activeRoom,
         };
-      },
+    },
     query: GetAllMessagePaging,
 });

@@ -7,7 +7,7 @@ import environment from 'relay/RelayEnvironment';
 import { CreateMessage } from 'relay/graphql/RoomGraph';
 
 const ChatComposer = ({ activeRoom }) => {
-    const sendMessage = ({ textmessage }) => {
+    const sendMessage = ({ textmessage }, actions) => {
         commitMutation(environment(), {
             mutation: CreateMessage,
             variables: {
@@ -19,19 +19,20 @@ const ChatComposer = ({ activeRoom }) => {
                 console.log(errors);
               }
               else {
+                actions.resetForm({});
                 console.log("SearchBar -> CreateConnection", RoomGraphAddNewChat)
               }
               
             },
             updater: proxyStore => {
-            //   const createConnection = proxyStore.getRootField('RoomGraphCreateRoom');
-            //   const newRoom = createConnection.getLinkedRecord('room');
-            //   const root = proxyStore.get(ROOT_ID);
-            //   const roomAllQueryStore = root.getLinkedRecord("RoomGraphGetAllRoom");
-            //   const connection = ConnectionHandler.getConnection(roomAllQueryStore, "GetAllRoomChatList_allRooms", []);
-            //   if (connection) {
-            //     ConnectionHandler.insertEdgeBefore(connection, newRoom)
-            //   }
+              // const createConnection = proxyStore.getRootField('RoomGraphCreateRoom');
+              // const newRoom = createConnection.getLinkedRecord('room');
+              // const root = proxyStore.get(ROOT_ID);
+              // const roomAllQueryStore = root.getLinkedRecord("RoomGraphGetAllRoom");
+              // const connection = ConnectionHandler.getConnection(roomAllQueryStore, "GetAllRoomChatList_allRooms", []);
+              // if (connection) {
+              //   ConnectionHandler.insertEdgeBefore(connection, newRoom)
+              // }
             },
             onError: (err) => {
               console.log(err);
@@ -46,9 +47,10 @@ const ChatComposer = ({ activeRoom }) => {
             }}
             onSubmit={sendMessage}
         >
-            <Form>
+          {({values}) => <Form>
                 <div className="chatcomposer">
                     <MessageInput
+                        value= {values.textmessage || ''}
                         name="textmessage"
                         type="input"
                         placeholder="Type a message..."
@@ -58,6 +60,7 @@ const ChatComposer = ({ activeRoom }) => {
                     </div>
                 </div>
             </Form>
+          }
         </Formik>
     </ChatComposerWrapper>
 }

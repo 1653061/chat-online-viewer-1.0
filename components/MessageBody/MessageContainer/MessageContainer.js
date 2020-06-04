@@ -7,6 +7,8 @@ import ChatTitle from './ChatTitle';
 import ChatArea from './ChatArea';
 import ChatComposer from './ChatComposer';
 import SearchBar from './SearchBar';
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const MessageContainter = ({newMessage, activeRoom}) => {
     return <MCWrapper>
@@ -19,7 +21,8 @@ const MessageContainter = ({newMessage, activeRoom}) => {
                         return null;
                     }
                     if (!props) {
-                        return <NoMessage>Loading...</NoMessage>
+                        const loadingIcon = <LoadingOutlined style={{ fontSize: 30 }} spin />;
+                        return <NoMessage><div className="tablecell"><Spin indicator={loadingIcon} /></div></NoMessage>
                     }
                     return <ChatArea activeRoom={activeRoom.roomId} messages={props.RoomGraphGetAllMessage}/>
                 }}/> : <NoMessage></NoMessage>

@@ -64,6 +64,7 @@ export const SignInWithGoogle = graphql`
       token
       refreshToken
       user {
+        _id
         name
         email
         phone

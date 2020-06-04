@@ -4,10 +4,13 @@ import { createPaginationContainer } from 'react-relay';
 import { GetAllRoomFragment, GetAllRoomPaging } from 'relay/graphql/RoomGraph';
 import MainContext from 'constants/MainContext';
 import { FriendCard, FriendListWrapper, NewMessageCard } from './FriendList.style';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom}) => {
     const { currentUser } = useContext(MainContext);
     const [userDatas, setUserDatas] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
         if (rooms?.allRooms?.edges?.length && currentUser) {
@@ -37,23 +40,32 @@ const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom}
                 </div>
             </section>
         </FriendCard> : null}
-        <List 
-            dataSource={userDatas}
-            split={false}
-            renderItem={
-                item => (
-                    <FriendCard onClick={() => getActiveRoom(item.roomId, item.name)} active={item.active}>
-                        <section className="avatarsection">
-                            <img src="/avatar.png" className="avatar" />
-                        </section>
-                        <section className="info">
-                            <div className="name">{item.name}</div>
-                            <div>{item.lastMessage}</div>
-                        </section>
-                    </FriendCard>
-                )
-            }
-        />
+        <InfiniteScroll
+            initialLoad={false}
+            pageStart={0}
+            loadMore={() => {console.log('Hello')}}
+            hasMore={false}
+            useWindow={false}
+        >
+            <List 
+                dataSource={userDatas}
+                split={false}
+                renderItem={
+                    item => (
+                        <FriendCard onClick={() => getActiveRoom(item.roomId, item.name)} active={item.active}>
+                            <section className="avatarsection">
+                                <img src="/avatar.png" className="avatar" />
+                            </section>
+                            <section className="info">
+                                <div className="name">{item.name}</div>
+                                <div>{item.lastMessage}</div>
+                            </section>
+                        </FriendCard>
+                    )
+                }
+            />
+        </InfiniteScroll>
+        
     </FriendListWrapper>
 }
 
@@ -64,15 +76,15 @@ export default createPaginationContainer(FriendList, { rooms: GetAllRoomFragment
     },
     getFragmentVariables(prevVars, totalCount) {
         return {
-          ...prevVars,
-          count: totalCount,
+            ...prevVars,
+            count: totalCount,
         };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
         return {
-          count,
-          cursor,
+            count,
+            cursor,
         };
-      },
+    },
     query: GetAllRoomPaging,
 });

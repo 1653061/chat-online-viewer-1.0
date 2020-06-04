@@ -4,13 +4,20 @@ import { createPaginationContainer, requestSubscription } from 'react-relay';
 import { GetAllMessageFragment, GetAllMessagePaging, SubscriptionNewMessage } from 'relay/graphql/RoomGraph';
 import { ROOT_ID, ConnectionHandler } from 'relay-runtime';
 import MainContext from 'constants/MainContext';
-import { List } from 'antd';
+import { List, Spin } from 'antd';
 import environment from 'relay/RelayEnvironment';
 import Message  from './Message';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const ChatArea = ({ activeRoom, messages = [], relay }) => {
     const { currentUser } = useContext(MainContext);
     const [messagesData, setMessagesData] = useState([]);
+    const messagesEndRef = useRef();
+    const listRef = useRef();
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [outOfData, setOutOfData] = useState(false);
+    const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
 
     useEffect(() => {
         console.log("ChatArea -> messages", messages)
@@ -19,11 +26,11 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                 const { createdAt, ownerId, message } = edge.node;
                 return ({
                     data: {
-                        timestamp: new Date(createdAt),
+                        timestamp: new Date(parseInt(createdAt)),
                         message,
                     },
                     isMine: currentUser._id === ownerId,
-                    showTimestamp: true,
+                    showTimestamp: false,
                 })
             })
             setMessagesData(messagesDataList);
@@ -39,14 +46,14 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                 },
                 onCompleted: ({ chatAdded }, errors) => {
                     if (errors) {
-                      console.log(errors);
+                        console.log(errors);
                     }
                     else {
-                      console.log("SearchBar -> CreateConnection", chatAdded)
+                        console.log("SearchBar -> CreateConnection", chatAdded)
                     }
                     
-                  },
-                  updater: proxyStore => {
+                },
+                updater: proxyStore => {
                     const createConnection = proxyStore.getRootField('chatAdded');
                     console.log("ChatArea -> createConnection", createConnection)
                     const root = proxyStore.get(ROOT_ID);
@@ -60,9 +67,9 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                             createConnection,
                             'ChatList',
                         );
-                      ConnectionHandler.insertEdgeAfter(connection, edge)
+                        ConnectionHandler.insertEdgeAfter(connection, edge)
                     }
-                  },
+                },
             })
 
             return () => {
@@ -70,38 +77,53 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
             }
         }
     }, [activeRoom])
-    const messagesEndRef = useRef(null);
-
-    /*FOR PAGING
-    if (relay.hasMore()) {
-        relay.loadMore(10, error => console.log(error));
-    }
-    */
 
     const scrollToBottom = () => {
-        messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+        messagesEndRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'center'
+        });
     }
 
     useEffect(() => {
+        listRef.current.onscroll = () => {
+            if (listRef.current.scrollTop === 0) {
+                if (relay.hasMore()) {
+                    setLoading(true);
+                    relay.loadMore(10, error => console.log(error));
+                }
+                else {
+                    setLoading(false);
+                    setOutOfData(true);
+                }
+            }
+        }
+    }, []);
 
-    }, )
+    const lastMessage = () => {
+        scrollToBottom();
+        setShouldScrollToBottom(false);
+    }
 
-    useEffect(scrollToBottom, []);
-
-    useEffect(scrollToBottom, [messages]);
-
-    return <ChatAreaWrapper>
+    return <ChatAreaWrapper ref={listRef}>
+        {/* {messagesData.length === 0 && <div>Type something to begin chat</div>} */}
+        {outOfData && <div>Out of data</div>}
+        {loading && <div><Spin /></div>}
         {
             messagesData && messagesData.length &&
-            <List 
-                dataSource={messagesData}
-                split={false}
-                renderItem={
-                    item => (
-                        <Message mydata={item} />
-                    )
-                }
-            />
+                    <List 
+                        dataSource={messagesData}
+                        split={false}
+                        renderItem={
+                            (item, index) => {
+                                if (index === messagesData.length - 1 && shouldScrollToBottom) {
+                                    return <Message mydata={item} lastMessage={lastMessage} />
+                                }
+                                return <Message mydata={item} />
+                            }
+                        }
+                    />
         }
         <div ref={messagesEndRef} />
     </ChatAreaWrapper>
@@ -114,16 +136,16 @@ export default createPaginationContainer(ChatArea, { messages: GetAllMessageFrag
     },
     getFragmentVariables(prevVars, totalCount) {
         return {
-          ...prevVars,
-          count: totalCount,
+            ...prevVars,
+            count: totalCount,
         };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
         return {
-          count,
-          cursor,
-          roomId: props.activeRoom,
+            count,
+            cursor,
+            roomId: props.activeRoom,
         };
-      },
+    },
     query: GetAllMessagePaging,
 });

@@ -90,10 +90,6 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
         });
     }
 
-    useEffect(() => {
-
-    }, )
-
     useEffect(scrollToBottom, []);
 
     useEffect(() => {

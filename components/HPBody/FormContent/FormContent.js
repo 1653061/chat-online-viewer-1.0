@@ -3,6 +3,7 @@ import SignInForm from './SignInForm';
 import SignUpForm from './SignUpForm';
 import Title from './Title';
 import { FormContentWrapper, TextWrapper } from './FormContent.style';
+import Link from 'next/link';
 
 const FormContent = ({}) => {
     const [signin, setSignin] = useState(true);
@@ -16,7 +17,7 @@ const FormContent = ({}) => {
         {signin ?  
             (<>
                 <SignInForm />
-                <TextWrapper forgot={true}><a>Forgot password?</a></TextWrapper>
+                <TextWrapper forgot={true}><Link href="/requestresetpassword"><a>Forgot password?</a></Link></TextWrapper>
                 <TextWrapper>
                     Don't have an account? <a onClick={handleClicked}>Sign Up</a>
                 </TextWrapper>

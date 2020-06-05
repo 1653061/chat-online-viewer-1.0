@@ -5,7 +5,6 @@ export const ButtonWrapper = styled.button`
     background-color: ${props => props.option === "Success" && '#28A745;'
         || props.option === "Primary" && '#007BFF;'
         || props.option === "Danger" && '#DC3545;'
-        || option === "Hello" && 'red;'
     }
     width: 100%;
     color: white;

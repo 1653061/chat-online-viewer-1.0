@@ -11,7 +11,6 @@ import Router from 'next/router';
 import GoogleLogin from 'react-google-login';
 import MainContext from 'constants/MainContext';
 
-
 const SignInForm = ({ }) => {
   const { setCurrentUser } = useContext(MainContext);
   const [noti, setNoti] = useState({

@@ -72,3 +72,21 @@ export const SignInWithGoogle = graphql`
     }
   }
 `
+
+export const SendMailResetPassword = graphql`
+  mutation UserGraphSendMailResetPasswordMutation($email: String!) {
+    UserGraphSendMailResetPassword(email: $email) {
+      message
+      statusCode
+    }
+  }   
+`
+
+export const ResetPassword = graphql`
+  mutation UserGraphResetPasswordMutation($input: ResetPasswordInput!) {
+    UserGraphResetPassword(input: $input) {
+      message
+      statusCode
+    }
+  }
+`

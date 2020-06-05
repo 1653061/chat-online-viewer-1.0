@@ -103,6 +103,11 @@ input GoogleSigninInput {
     name: String!
 }
 
+input ResetPasswordInput {
+    token: String!
+    password: String!
+}
+
 type Query {
     UserGraphGetInfo: User!
     UserGraphInfo: BasicResponse!
@@ -118,6 +123,8 @@ type Mutation {
     UserGraphVerifyEmailToken(input: EmailVerifyTokenInput!): EmailVerifyTokenPayload!
     UserGraphSignInWithGoogle(input: GoogleSigninInput!): UserPayload!
     RoomGraphAddNewChat(message: String!, roomId: String!): BasicResponse!
+    UserGraphSendMailResetPassword(email: String!): BasicResponse!
+    UserGraphResetPassword(input: ResetPasswordInput!): BasicResponse!
 }
 
 type Subscription {

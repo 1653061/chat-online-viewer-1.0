@@ -20,7 +20,7 @@ const ChatComposer = ({ activeRoom }) => {
               }
               else {
                 actions.resetForm({});
-                console.log("SearchBar -> CreateConnection", RoomGraphAddNewChat)
+                // console.log("SearchBar -> CreateConnection", RoomGraphAddNewChat)
               }
               
             },

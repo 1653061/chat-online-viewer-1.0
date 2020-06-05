@@ -39,7 +39,6 @@ const ResetPasswordPage = ({}) => {
                                     console.log(errors);
                                 }
                                 else {
-                                    console.log(UserGraphSendMailResetPassword);
                                     const type = UserGraphSendMailResetPassword.statusCode === 200 ? 'success' : 'error';
                                     setNoti({
                                         type,

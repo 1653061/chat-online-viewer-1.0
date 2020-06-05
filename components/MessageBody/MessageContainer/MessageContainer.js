@@ -16,7 +16,7 @@ const MessageContainter = ({newMessage, activeRoom}) => {
             <><ChatTitle activeUser={activeRoom ? activeRoom.activeUser : null} />
             {
                 activeRoom && activeRoom.roomId ?
-                <QueryRenderer environment={environment()} query={GetAllMessage} variables={{count: 10, cursor: '', roomId: activeRoom.roomId}} render={({ error, props }) => {
+                <QueryRenderer environment={environment()} query={GetAllMessage} variables={{count: 20, cursor: '', roomId: activeRoom.roomId}} render={({ error, props }) => {
                     if (error) {
                         return null;
                     }

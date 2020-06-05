@@ -20,7 +20,6 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
     const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
 
     useEffect(() => {
-        console.log("ChatArea -> messages", messages)
         if (messages?.allChat?.edges?.length && currentUser) {
             const messagesDataList = messages.allChat.edges.map((edge) => {
                 const { createdAt, ownerId, message } = edge.node;
@@ -54,19 +53,18 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                     
                 },
                 updater: proxyStore => {
-                    const createConnection = proxyStore.getRootField('chatAdded');
-                    console.log("ChatArea -> createConnection", createConnection)
+                    const createConnection = proxyStore.getRootField('chatAdded').getLinkedRecord('node');
                     const root = proxyStore.get(ROOT_ID);
                     const chatAllQueryStore = root.getLinkedRecord(`RoomGraphGetAllMessage(roomId:"${activeRoom}")`);
-                    console.log("ChatArea -> chatAllQueryStore", chatAllQueryStore)
                     const connection = ConnectionHandler.getConnection(chatAllQueryStore, "GetAllRoomChatList_allChat", []);
                     if (connection) {
                         const edge = ConnectionHandler.createEdge(
                             proxyStore,
                             connection,
                             createConnection,
-                            'ChatList',
+                            'ChatEdge',
                         );
+                        console.log("ChatArea -> edge", edge)
                         ConnectionHandler.insertEdgeAfter(connection, edge)
                     }
                 },

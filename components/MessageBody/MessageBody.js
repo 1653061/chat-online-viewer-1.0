@@ -34,10 +34,12 @@ const MessageBody = ({}) => {
 
     const createNewMessage = () => {
         if (isAddNew) setIsAddNew(false);
+        setActiveRoom(null);
         setNewMessage(true);
     }
 
     const discardNewMessage = () => {
+        setActiveRoom(null)
         setNewMessage(false);
     }
 

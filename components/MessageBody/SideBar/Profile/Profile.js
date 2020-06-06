@@ -1,11 +1,11 @@
 import React from 'react';
-import { ProfileWrapper } from './Profile.style';
+import { ProfileWrapper, Btn, Icon, Logo } from './Profile.style';
 
 const Profile = ({showModal, createNewMessage}) => {
     return <ProfileWrapper>
-        <img src="/avatar.png" className="logo" />
-        <button className="btn" onClick={createNewMessage}><img src="/new.png" className="icon" /></button>
-        <button className="btn rightedge" onClick={showModal}><img src="/setting.png" className="icon" /></button>
+        <Logo src="/avatar.png" />
+        <Btn onClick={createNewMessage}><Icon src="/new.png" /></Btn>
+        <Btn className="rightedge" onClick={showModal}><Icon src="/setting.png" /></Btn>
     </ProfileWrapper>
 }
 

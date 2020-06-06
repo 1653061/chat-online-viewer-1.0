@@ -60,11 +60,8 @@ const ResetPasswordPage = ({}) => {
                         name="email"
                         type="text"
                         placeholder="Email"
-                    />
-                    <div> 
-                        <Button type="submit" option="Success">Submit</Button>
-                    </div>
-                    
+                    />  
+                    <Button type="submit" option="Success">Submit</Button>
                 </Form>
             </Formik>
         </FormCard>

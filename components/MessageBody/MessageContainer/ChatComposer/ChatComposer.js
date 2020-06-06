@@ -1,5 +1,11 @@
 import React from 'react';
-import { ChatComposerWrapper } from './ChatComposer.style';
+import { 
+  ChatComposerWrapper,
+  ChatComposerSection,
+  ButtonArea,
+  SendButton,
+  Icon
+} from './ChatComposer.style';
 import MessageInput from './MessageInput';
 import { Formik, Form } from 'formik';
 import { commitMutation } from 'react-relay';
@@ -52,17 +58,17 @@ const ChatComposer = ({ activeRoom }) => {
           })}
         >
           {({values}) => <Form>
-                <div className="chatcomposer">
+                <ChatComposerSection>
                     <MessageInput
                         value= {values.textmessage || ''}
                         name="textmessage"
                         type="input"
                         placeholder="Type a message..."
                     />
-                    <div className="buttonarea">
-                        <button className="send" ><img src="/send.png" className="icon" /></button>
-                    </div>
-                </div>
+                    <ButtonArea>
+                        <SendButton><Icon src="/send.png" /></SendButton>
+                    </ButtonArea>
+                </ChatComposerSection>
             </Form>
           }
         </Formik>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { MessageWrapper } from './Message.style';
+import { MessageWrapper, MessageSection, TimeStamp, BubbleContainer, Bubble } from './Message.style';
 
 const Message = props => {
     const {
@@ -18,23 +18,20 @@ const Message = props => {
     }, []);
 
     return <MessageWrapper>
-            <div className={[
-                'message',
-                `${isMine ? 'mine' : ''}`,
-            ].join(' ')}>
+            <MessageSection>
             {
                 showTimestamp &&
-                    <div className="timestamp">
+                    <TimeStamp>
                         { friendlyTimestamp }
-                    </div>
+                    </TimeStamp>
             }
 
-                <div className="bubble-container">
-                <div className="bubble" title={friendlyTimestamp}>
-                    { data.message }
-                </div>
-                </div>
-            </div>
+                <BubbleContainer isMine={isMine} >
+                    <Bubble isMine={isMine} title={friendlyTimestamp}>
+                        { data.message }
+                    </Bubble>
+                </BubbleContainer>
+            </MessageSection>
 
         </MessageWrapper>
 }

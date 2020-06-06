@@ -1,12 +1,19 @@
 import React from 'react';
-import { ChatTitleWrapper } from './ChatTtitle.style';
+import { 
+    ChatTitleWrapper,
+    Logo,
+    NameTitle,
+    Name,
+    Btn,
+    Icon
+} from './ChatTtitle.style';
 
 const ChatTitle = ({activeUser}) => {
     return <ChatTitleWrapper>
-        <img src="/avatar.png" className="logo" />
-        <div className="nametitle"><div>{activeUser ? activeUser : ''}</div></div>
-        <button className="btn rightedge"><img src="/new.png" className="icon" /></button>
-        <button className="btn"><img src="/setting.png" className="icon" /></button>
+        <Logo src="/avatar.png" />
+        <NameTitle><Name>{activeUser ? activeUser : ''}</Name></NameTitle>
+        <Btn className="rightedge"><Icon src="/new.png" /></Btn>
+        <Btn className="btn"><Icon src="/setting.png" /></Btn>
     </ChatTitleWrapper>
 }
 

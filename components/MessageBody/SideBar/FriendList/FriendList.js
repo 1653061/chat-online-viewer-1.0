@@ -3,7 +3,20 @@ import { List } from 'antd';
 import { createPaginationContainer } from 'react-relay';
 import { GetAllRoomFragment, GetAllRoomPaging } from 'relay/graphql/RoomGraph';
 import MainContext from 'constants/MainContext';
-import { FriendCard, FriendListWrapper, NewMessageCard, Spinning } from './FriendList.style';
+import { 
+    FriendCard, 
+    FriendListWrapper, 
+    NewMessageCard, 
+    Spinning, 
+    LastMessage, 
+    AvatarSection,
+    Avatar,
+    Info,
+    Name,
+    Content,
+    DiscardButton,
+    ButtonArea
+} from './FriendList.style';
 import InfiniteScroll from 'react-infinite-scroller';
 
 const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom, isAddNew}) => {
@@ -78,15 +91,15 @@ const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom,
 
     return <FriendListWrapper>
         {newMessage ? <FriendCard newMessage active={true}>
-            <section className="avatarsection">
-                <img src="/avatar.png" className="avatar" />
-            </section>
-            <section className="info">
-                <div className="content">New message</div>
-                <div className="buttonarea">
-                    <button className="discard" onClick={discardNewMessage}>x</button>
-                </div>
-            </section>
+            <AvatarSection>
+                <Avatar src="/avatar.png" />
+            </AvatarSection>
+            <Info newMessage>
+                <Content>New message</Content>
+                <ButtonArea>
+                    <DiscardButton onClick={discardNewMessage}>x</DiscardButton>
+                </ButtonArea>
+            </Info>
         </FriendCard> : null}
         <InfiniteScroll
             initialLoad={false}
@@ -101,13 +114,13 @@ const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom,
                 renderItem={
                     item => (
                         <FriendCard onClick={() => handleClickFriendCard(item)} active={item.active}>
-                            <section className="avatarsection">
-                                <img src="/avatar.png" className="avatar" />
-                            </section>
-                            <section className="info">
-                                <div className="name">{item.name}</div>
-                                <div>{item.lastMessage}</div>
-                            </section>
+                            <AvatarSection>
+                                <Avatar src="/avatar.png" />
+                            </AvatarSection>
+                            <Info>
+                                <Name>{item.name}</Name>
+                                <LastMessage>{item.lastMessage}</LastMessage>
+                            </Info>
                         </FriendCard>
                     )
                 }

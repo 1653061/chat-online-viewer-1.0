@@ -7,32 +7,8 @@ export const ProfileWrapper = styled.div`
     display: flex;
     flex-direction: horizon;
 
-    .logo {
-        display: none;
-    }
-
-    .btn {
-        flex: 1;
-        margin-left: 5px;
-        margin-top: 3px;
-        width: 80%;
-        height: 80%;
-        border-radius: 50%;
-        border: none;
-        background-color: rgba(0, 0, 0, .04);
-        outline: none;
-    }
-
     .rightedge {
         margin-right: 5px;
-    }
-
-    .icon {
-        flex: 1;
-        display: block;
-        width: 15px;
-        height: 15px;
-        margin: auto;
     }
 
     @media ${device.mobileL} {
@@ -41,22 +17,6 @@ export const ProfileWrapper = styled.div`
 
         .rightedge {
             margin-right: 0;
-        }
-
-        .logo {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin: 10px 10px;
-            background-color: white;
-        }
-
-        .btn {
-            float: right;
-            width: 30px;
-            height: 30px;
-            margin: 10px 5px;
         }
     }
 
@@ -67,28 +27,66 @@ export const ProfileWrapper = styled.div`
         .rightedge {
             margin-right: 0;
         }
+    }
+`
 
-        .logo {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin: 10px 20px;
-            background-color: white;
-        }
+export const Btn = styled.button`
+    flex: 1;
+    margin-left: 5px;
+    margin-top: 3px;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(0, 0, 0, .04);
+    outline: none;
 
-        .btn {
-            margin: 10px 5px;
-            float: right;
-            width: 40px;
-            height: 40px;
-        }
-
-        .icon {
-            width: 20px;
-            height: 20px;
-        }
+    @media ${device.mobileL} {
+        float: right;
+        width: 30px;
+        height: 30px;
+        margin: 10px 5px;
     }
 
-    
+    @media ${device.laptop} {
+        margin: 10px 5px;
+        float: right;
+        width: 40px;
+        height: 40px;
+    }
+`
+
+export const Icon = styled.img`
+    flex: 1;
+    display: block;
+    width: 15px;
+    height: 15px;
+    margin: auto;
+
+    @media ${device.laptop} {
+        width: 20px;
+        height: 20px;
+    }
+`
+
+export const Logo = styled.img`
+    display: none;
+
+    @media ${device.mobileL} {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin: 10px 10px;
+        background-color: white;
+    }
+
+    @media ${device.laptop} {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin: 10px 20px;
+        background-color: white;
+    }
 `

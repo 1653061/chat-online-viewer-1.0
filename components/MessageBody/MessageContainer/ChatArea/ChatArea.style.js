@@ -3,10 +3,6 @@ import styled from 'styled-components';
 export const ChatAreaWrapper = styled.div`
     height: 85%;
     overflow: auto;
-
-    .Spinning {
-        text-align: center;
-    }
 `
 
 export const NoMessage = styled.div`
@@ -14,11 +10,19 @@ export const NoMessage = styled.div`
     height: 100%;
     display: table;
     text-align: center;
+`
 
-    .content {
-        display: table-cell;
-        vertical-align: middle;
-        font-size: 2rem;
-        color: #007BFF;
-    }
+export const Content = styled.div`
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 2rem;
+    color: #007BFF;
+`
+
+export const Spinning = styled.div`
+    text-align: center;
+`
+
+export const MessageEndRef = styled.div`
+    
 `

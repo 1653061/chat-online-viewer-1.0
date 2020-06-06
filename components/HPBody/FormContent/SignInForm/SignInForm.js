@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { commitMutation } from 'react-relay';
-import { Container, SignInWithGoogle, SignInWithFacebook } from './SignInForm.style';
+import { Container, SignInWithGoogle, SignInWithFacebook, Noti, Content, LinkHandler, Img } from './SignInForm.style';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import environment from 'relay/RelayEnvironment';
@@ -9,7 +9,6 @@ import TextInput from 'components/Form/TextInput';
 import Button from 'components/Button';
 import Router from 'next/router';
 import GoogleLogin from 'react-google-login';
-// import FacebookLogin from 'react-facebook-login';
 import MainContext from 'constants/MainContext';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
@@ -104,12 +103,12 @@ const SignInForm = ({enableMessage}) => {
     };
 
     return <Container>
-      {noti.isNotified ? <div className="noti">
-        <p className="content">
+      {noti.isNotified ? <Noti>
+        <Content>
           {noti.message}.
-          {noti.message === 'Account is not verified' ? <a> Click here to resend activation code</a> : null}
-        </p>
-      </div> : null}
+          {noti.message === 'Account is not verified' ? <LinkHandler> Click here to resend activation code</LinkHandler> : null}
+        </Content>
+      </Noti> : null}
       <Formik
           initialValues={{
               email: '',
@@ -161,30 +160,29 @@ const SignInForm = ({enableMessage}) => {
           <SignInWithGoogle 
             onClick={renderProps.onClick} 
             disabled={renderProps.disabled}>
-            <img src="/google.png" className="icon" />
+            <Img src="/google.png" className="icon" />
             Sign in with Google
           </SignInWithGoogle>
         )}
       />
-      <div>
-        <FacebookLogin
-          appId="695890714544244"
-          autoLoad={true}
-          fields="name,email"
-          callback={res => {
-            signInWith(res.email, res.name);
-          }} 
-          render={renderProps => (
-            <SignInWithFacebook 
-              onClick={renderProps.onClick}
-              disabled={renderProps.isDisabled}
-            >
-              <img src="/facebook.png" className="icon" />
-              Sign in with Facebook
-            </SignInWithFacebook>
-          )}
+      <FacebookLogin
+        appId="695890714544244"
+        autoLoad={true}
+        fields="name,email"
+        callback={res => {
+          signInWith(res.email, res.name);
+        }} 
+        render={renderProps => (
+          <SignInWithFacebook 
+            onClick={renderProps.onClick}
+            disabled={renderProps.isDisabled}
+          >
+            <Img src="/facebook.png" className="icon" />
+            Sign in with Facebook
+          </SignInWithFacebook>
+        )}
         />
-      </div>
+      
     </Container>
 }
 

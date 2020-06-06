@@ -98,10 +98,7 @@ const ResetPasswordPage = ({}) => {
                         type="password"
                         placeholder="Confirm new password"
                     />
-                    <div> 
-                        <MyButton type="submit" option="Success">Submit</MyButton>
-                    </div>
-                    
+                    <MyButton type="submit" option="Success">Submit</MyButton>
                 </Form>
             </Formik>
         </FormCard>

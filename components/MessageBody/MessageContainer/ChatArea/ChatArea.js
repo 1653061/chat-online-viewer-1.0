@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { ChatAreaWrapper, NoMessage } from './ChatArea.style';
+import { ChatAreaWrapper, NoMessage, Content, Spinning, MessageEndRef } from './ChatArea.style';
 import { createPaginationContainer, requestSubscription } from 'react-relay';
 import { GetAllMessageFragment, GetAllMessagePaging, SubscriptionNewMessage } from 'relay/graphql/RoomGraph';
 import { ROOT_ID, ConnectionHandler } from 'relay-runtime';
@@ -110,8 +110,8 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
     }
 
     return <ChatAreaWrapper ref={listRef}>
-        {messagesData.length === 0 && <NoMessage><div className="content">Type something to begin chat</div></NoMessage>}
-        {loading && <div className="Spinning"><Spin /></div>}
+        {messagesData.length === 0 && <NoMessage><Content>Type something to begin chat</Content></NoMessage>}
+        {loading && <Spinning><Spin /></Spinning>}
         {
             messagesData && messagesData.length > 0 &&
                     <List 
@@ -127,7 +127,7 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                         }
                     />
         }
-        <div ref={messagesEndRef} />
+        <MessageEndRef ref={messagesEndRef} />
     </ChatAreaWrapper>
 }
 

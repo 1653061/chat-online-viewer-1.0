@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { commitMutation } from 'react-relay';
-import { Container } from './SignUpForm.style';
+import { Container, Noti, Content } from './SignUpForm.style';
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import environment from 'relay/RelayEnvironment';
@@ -55,9 +55,9 @@ const SignUpForm = ({enableNoti}) => {
 
   return (
     <Container>
-      {noti.isNotified ? <div className="noti">
-        <p className="content">{noti.message}</p>
-      </div> : null}
+      {noti.isNotified ? <Noti>
+        <Content>{noti.message}</Content>
+      </Noti> : null}
       <Formik
         initialValues={{
           fullname: '',

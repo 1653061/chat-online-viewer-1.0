@@ -7,7 +7,7 @@ const HeaderSection = ({}) => {
             Feature
             These are all features of our project
         </DesSection>
-        <ImageSection src="/feature1.png" alt="FeatureImage" />
+        <ImageSection src="/feature0.png" alt="FeatureImage" />
     </Container>
 }
 

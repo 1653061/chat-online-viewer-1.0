@@ -1,9 +1,9 @@
 import React from 'react';
 import { ItemWrapper, ImageFeature, DesFeature } from './Item.style'
 
-const Item = ({}) => {
+const Item = ({src}) => {
     return <ItemWrapper>
-        <ImageFeature src="/feature1.png" alt="FeatureImage" />
+        <ImageFeature src={src} alt="FeatureImage" />
         <DesFeature> Description </DesFeature>
     </ItemWrapper>
 }

@@ -4,9 +4,9 @@ import Item from 'components/FeatureBody/List/Item'
 
 const List = ({}) => {
     return <Container>
-        <Item/>
-        <Item/>
-        <Item/>
+        <Item src="/feature1.png"/>
+        <Item src="/feature2.png"/>
+        <Item src="/feature3.png"/>
     </Container>
 }
 

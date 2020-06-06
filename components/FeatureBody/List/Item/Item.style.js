@@ -7,8 +7,8 @@ export const ItemWrapper = styled.div`
 ` 
 
 export const ImageFeature = styled.img`
-    width: 50%;
-    height: 50%;
+    width: 400px;
+    height: 400px;
 `
 
 export const DesFeature = styled.p` 

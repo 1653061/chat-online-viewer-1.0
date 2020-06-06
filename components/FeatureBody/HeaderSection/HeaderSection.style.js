@@ -10,9 +10,11 @@ export const Container = styled.div`
 `
 export const ImageSection = styled.img`
     flex: 1;
-    width: inherit;
-`
+    width: 30%;
+    height: auto;
+    margin: 3%;
 
+`
 export const DesSection = styled.p` 
     font-size: 30px;
     color: #0084FF;

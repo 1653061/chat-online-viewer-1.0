@@ -98,7 +98,7 @@ input EmailVerifyTokenInput {
     token: String!
 }
 
-input GoogleSigninInput {
+input SigninWithInput {
     email: String!
     name: String!
 }
@@ -121,7 +121,7 @@ type Mutation {
     UserGraphSignIn(input: SignInUserInput!): UserPayload!
     RoomGraphCreateRoom(email: String!): CreatedConnectionPayload!
     UserGraphVerifyEmailToken(input: EmailVerifyTokenInput!): EmailVerifyTokenPayload!
-    UserGraphSignInWithGoogle(input: GoogleSigninInput!): UserPayload!
+    UserGraphSignInWith(input: SigninWithInput!): UserPayload!
     RoomGraphAddNewChat(message: String!, roomId: String!): BasicResponse!
     UserGraphSendMailResetPassword(email: String!): BasicResponse!
     UserGraphResetPassword(input: ResetPasswordInput!): BasicResponse!

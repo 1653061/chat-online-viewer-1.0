@@ -5,7 +5,7 @@ import Title from './Title';
 import { FormContentWrapper, TextWrapper } from './FormContent.style';
 import Link from 'next/link';
 
-const FormContent = ({}) => {
+const FormContent = ({enableNoti, enableMessage}) => {
     const [signin, setSignin] = useState(true);
 
     const handleClicked = () => {
@@ -16,7 +16,7 @@ const FormContent = ({}) => {
         <Title />
         {signin ?  
             (<>
-                <SignInForm />
+                <SignInForm enableMessage={enableMessage} />
                 <TextWrapper forgot={true}><Link href="/requestresetpassword"><a>Forgot password?</a></Link></TextWrapper>
                 <TextWrapper>
                     Don't have an account? <a onClick={handleClicked}>Sign Up</a>
@@ -24,7 +24,7 @@ const FormContent = ({}) => {
             </>)
             :
             (<>
-                <SignUpForm />
+                <SignUpForm enableNoti={enableNoti} />
                 <TextWrapper>
                     Already have an account? <a onClick={handleClicked}>Sign In</a>
                 </TextWrapper>

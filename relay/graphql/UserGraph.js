@@ -58,9 +58,9 @@ export const VerifyEmailToken = graphql`
   }
 `
 
-export const SignInWithGoogle = graphql`
-  mutation UserGraphSignInWithGoogleMutation($input: GoogleSigninInput!) {
-    UserGraphSignInWithGoogle(input: $input) {
+export const SignInWith = graphql`
+  mutation UserGraphSignInWithMutation($input: SigninWithInput!) {
+    UserGraphSignInWith(input: $input) {
       token
       refreshToken
       user {

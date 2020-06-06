@@ -1,17 +1,19 @@
 import React, { useState, useContext } from 'react';
 import { commitMutation } from 'react-relay';
-import { Container } from './SignInForm.style';
+import { Container, SignInWithGoogle, SignInWithFacebook } from './SignInForm.style';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import environment from 'relay/RelayEnvironment';
-import { SignIn, SignInWithGoogle } from 'relay/graphql/UserGraph';
+import { SignIn, SignInWith } from 'relay/graphql/UserGraph';
 import TextInput from 'components/Form/TextInput';
 import Button from 'components/Button';
 import Router from 'next/router';
 import GoogleLogin from 'react-google-login';
+// import FacebookLogin from 'react-facebook-login';
 import MainContext from 'constants/MainContext';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
-const SignInForm = ({ }) => {
+const SignInForm = ({enableMessage}) => {
   const { setCurrentUser } = useContext(MainContext);
   const [noti, setNoti] = useState({
     isNotified: false, 
@@ -28,6 +30,7 @@ const SignInForm = ({ }) => {
           message: null
         })
       }
+      enableMessage();
       commitMutation(environment(), {
         mutation: SignIn,
         variables: {
@@ -67,21 +70,22 @@ const SignInForm = ({ }) => {
       });
     };
 
-    const signInWithGoogle = (email, name) => {
+    const signInWith = (email, name) => {
+      enableMessage();
       commitMutation(environment(), {
-        mutation: SignInWithGoogle,
+        mutation: SignInWith,
         variables: {
           input: {
             email,
             name
           },
         },
-        onCompleted: ({ UserGraphSignInWithGoogle }, errors) => {
+        onCompleted: ({ UserGraphSignInWith}, errors) => {
           if (errors) {
             console.log(errors);
           }
           else {
-            const { refreshToken, token, user } = UserGraphSignInWithGoogle;
+            const { refreshToken, token, user } = UserGraphSignInWith;
             document.cookie = `token=${token}`;
             document.cookie = `refreshToken=${refreshToken}`;
             localStorage.setItem('token', token);
@@ -91,7 +95,10 @@ const SignInForm = ({ }) => {
           }
         },
         onError: (err) => {
-          console.log(err);
+          setNoti({
+            isNotified: true,
+            message: err
+          });
         }
       });
     };
@@ -142,7 +149,7 @@ const SignInForm = ({ }) => {
         onSuccess={
           res => {
             const name = res.profileObj.givenName + ' ' + res.profileObj.familyName;
-            signInWithGoogle(res.profileObj.email, name);
+            signInWith(res.profileObj.email, name);
           }
         }
         onFailure={err => {
@@ -150,7 +157,34 @@ const SignInForm = ({ }) => {
           }
         }
         cookiePolicy='single_host_origin'
+        render={renderProps => (
+          <SignInWithGoogle 
+            onClick={renderProps.onClick} 
+            disabled={renderProps.disabled}>
+            <img src="/google.png" className="icon" />
+            Sign in with Google
+          </SignInWithGoogle>
+        )}
       />
+      <div>
+        <FacebookLogin
+          appId="695890714544244"
+          autoLoad={true}
+          fields="name,email"
+          callback={res => {
+            signInWith(res.email, res.name);
+          }} 
+          render={renderProps => (
+            <SignInWithFacebook 
+              onClick={renderProps.onClick}
+              disabled={renderProps.isDisabled}
+            >
+              <img src="/facebook.png" className="icon" />
+              Sign in with Facebook
+            </SignInWithFacebook>
+          )}
+        />
+      </div>
     </Container>
 }
 

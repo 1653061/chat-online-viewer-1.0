@@ -9,7 +9,7 @@ import TextInput from 'components/Form/TextInput';
 import Button from 'components/Button';
 import Router from 'next/router';
 
-const SignUpForm = ({ }) => {
+const SignUpForm = ({enableNoti}) => {
   const [noti, setNoti] = useState({
     isNotified: false,
     message: null
@@ -36,6 +36,7 @@ const SignUpForm = ({ }) => {
         if (errors) {
           console.log(errors);
         }
+        enableNoti();
       },
       onError: (err) => {
         setNoti({

@@ -3,33 +3,81 @@ import { List } from 'antd';
 import { createPaginationContainer } from 'react-relay';
 import { GetAllRoomFragment, GetAllRoomPaging } from 'relay/graphql/RoomGraph';
 import MainContext from 'constants/MainContext';
-import { FriendCard, FriendListWrapper, NewMessageCard } from './FriendList.style';
+import { FriendCard, FriendListWrapper, NewMessageCard, Spinning } from './FriendList.style';
 import InfiniteScroll from 'react-infinite-scroller';
 
-const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom}) => {
+const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom, isAddNew}) => {
     const { currentUser } = useContext(MainContext);
     const [userDatas, setUserDatas] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
         if (rooms?.allRooms?.edges?.length && currentUser) {
-            const userDataList = rooms.allRooms.edges.map((edge) => {
+            const userDataList = rooms.allRooms.edges.map((edge, index) => {
                 const { users, _id, lastMessage } = edge.node;
                 const userFilters = users.filter((user) => user._id !== currentUser._id);
                 return ({
+                    index,
                     roomId: _id,
                     name: userFilters[0].name,
                     lastMessage,
-                    active: true,
+                    active: false,
                 })
             })
             setUserDatas(userDataList);
         }
     }, [currentUser, rooms])
 
+    const handleClickFriendCard = (item) => {
+        const newUserDatas = userDatas.map(user => {
+            if (user.active === true) {
+                user.active = false;
+            }
+            if (user.index === item.index) {
+                user.active = true;
+            }
+            return user;
+        });
+        setUserDatas(newUserDatas);
+        getActiveRoom(item.roomId, item.name);
+    }
+
+    useEffect(() => {
+        if (isAddNew) {
+            const editUser = {
+                ...userDatas[0],
+                active: true
+            }
+            const newUserDatas = [editUser, ...userDatas.slice(1)];
+            setUserDatas(newUserDatas);
+            getActiveRoom(userDatas[0].roomId, userDatas[0].name);
+        }
+    }, [isAddNew])
+
+    useEffect(
+        () => {
+            if (newMessage) {
+                const newUserDatas = userDatas.map(user => {
+                    if (user.active === true) user.active = false;
+                    return user;
+                });
+                setUserDatas(newUserDatas);
+            }
+        }, [newMessage]
+    )
+
+    useEffect(() => {
+        if (loading) setLoading(false);
+    }, [userDatas]);
+
+    const loadMore = () => {
+        if (relay.hasMore()) {
+            relay.loadMore(10, error => console.log(error));
+        }
+    }
+
     return <FriendListWrapper>
-        {newMessage ? <FriendCard newMessage >
+        {newMessage ? <FriendCard newMessage active={true}>
             <section className="avatarsection">
                 <img src="/avatar.png" className="avatar" />
             </section>
@@ -43,8 +91,8 @@ const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom}
         <InfiniteScroll
             initialLoad={false}
             pageStart={0}
-            loadMore={() => {console.log('Hello')}}
-            hasMore={false}
+            loadMore={loadMore}
+            hasMore={relay.hasMore()}
             useWindow={false}
         >
             <List 
@@ -52,7 +100,7 @@ const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom}
                 split={false}
                 renderItem={
                     item => (
-                        <FriendCard onClick={() => getActiveRoom(item.roomId, item.name)} active={item.active}>
+                        <FriendCard onClick={() => handleClickFriendCard(item)} active={item.active}>
                             <section className="avatarsection">
                                 <img src="/avatar.png" className="avatar" />
                             </section>
@@ -64,6 +112,7 @@ const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom}
                     )
                 }
             />
+            {loading && <Spinning><Spin /></Spinning>}
         </InfiniteScroll>
         
     </FriendListWrapper>

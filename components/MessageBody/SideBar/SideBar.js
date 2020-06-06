@@ -6,13 +6,13 @@ import environment from 'relay/RelayEnvironment';
 import Profile from './Profile';
 import FriendList from './FriendList';
 
-const SideBar = ({showModal, newMessage, createNewMessage, discardNewMessage, getActiveRoom}) => {
+const SideBar = ({showModal, newMessage, createNewMessage, discardNewMessage, getActiveRoom, isAddNew}) => {
     return <SBWrapper>
         <Profile 
             showModal={showModal} 
             createNewMessage={createNewMessage} 
         />
-        <QueryRenderer environment={environment()} query={GetAllRoom} variables={{count: 10, cursor: ''}} render={({ error, props }) => {
+        <QueryRenderer environment={environment()} query={GetAllRoom} variables={{count: 15, cursor: ''}} render={({ error, props }) => {
             if (!props || error) {
                 return null;
             }
@@ -21,6 +21,7 @@ const SideBar = ({showModal, newMessage, createNewMessage, discardNewMessage, ge
             discardNewMessage={discardNewMessage}
             rooms={props.RoomGraphGetAllRoom}
             getActiveRoom={getActiveRoom}
+            isAddNew={isAddNew}
         /> 
         }}/>
     </SBWrapper>

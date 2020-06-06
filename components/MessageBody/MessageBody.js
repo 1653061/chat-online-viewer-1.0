@@ -14,6 +14,7 @@ const MessageBody = ({}) => {
     const [profile, setProfile] = useState({name: '', email : '', phone: ''});
     const [newMessage, setNewMessage] = useState(false);
     const [activeRoom, setActiveRoom] = useState(null);
+    const [isAddNew, setIsAddNew] = useState(false);
 
     useEffect(() => {
         async function getProfile() {
@@ -32,6 +33,7 @@ const MessageBody = ({}) => {
     }
 
     const createNewMessage = () => {
+        if (isAddNew) setIsAddNew(false);
         setNewMessage(true);
     }
 
@@ -40,6 +42,8 @@ const MessageBody = ({}) => {
     }
 
     const getActiveRoom = (roomId, activeUser) => {
+        if (isAddNew) setIsAddNew(false);
+        setNewMessage(false);
         setActiveRoom({
             roomId,
             activeUser
@@ -54,6 +58,11 @@ const MessageBody = ({}) => {
         Router.push('/');
     }
 
+    const handleSearchDone = () => {
+        setNewMessage(false);
+        setIsAddNew(true);
+    }
+
     const title = <Title>Profile</Title>
     return <MBWrapper>
         <SideBar 
@@ -62,8 +71,9 @@ const MessageBody = ({}) => {
             createNewMessage={createNewMessage} 
             discardNewMessage={discardNewMessage}
             getActiveRoom={getActiveRoom}
+            isAddNew={isAddNew}
         />
-        <MessageContainer newMessage={newMessage} activeRoom={activeRoom} />
+        <MessageContainer newMessage={newMessage} activeRoom={activeRoom} handleSearchDone={handleSearchDone} />
         <Modal
             title={title}
             visible={visible}

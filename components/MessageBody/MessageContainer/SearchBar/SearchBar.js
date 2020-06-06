@@ -9,7 +9,7 @@ import SearchInput from './SearchInput';
 import { SearchBarWrapper } from './SearchBar.style';
 import * as Yup from 'yup';
 
-const SearchBar = ({}) => {
+const SearchBar = ({handleSearchDone}) => {
   const [noti, setNoti] = useState({
     isNotified: false, 
     message: null
@@ -42,7 +42,7 @@ const SearchBar = ({}) => {
                   console.log(errors);
                 }
                 else {
-                  console.log("SearchBar -> CreateConnection", RoomGraphCreateRoom)
+                  handleSearchDone();
                 }
                 
               },

@@ -15,6 +15,7 @@ export const FriendCard = styled.div`
     border-radius: 12px;
     display: flex;
     flex-direction: row;
+    cursor: pointer;
 
     .name {
         font-weight: bold;
@@ -62,4 +63,8 @@ export const FriendCard = styled.div`
             color: white;
         }
     }
+`
+
+export const Spinning = styled.div`
+    text-align: middle;
 `

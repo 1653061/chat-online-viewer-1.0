@@ -2,7 +2,7 @@ import React from 'react';
 import { QueryRenderer } from 'react-relay';
 import { GetAllMessage } from 'relay/graphql/RoomGraph';
 import environment from 'relay/RelayEnvironment';
-import { MCWrapper, NoMessage } from './MessageContainer.style';
+import { MCWrapper, NoActiveRoom, LoadingMessage } from './MessageContainer.style';
 import ChatTitle from './ChatTitle';
 import ChatArea from './ChatArea';
 import ChatComposer from './ChatComposer';
@@ -10,24 +10,28 @@ import SearchBar from './SearchBar';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
-const MessageContainter = ({newMessage, activeRoom}) => {
+const MessageContainter = ({newMessage, activeRoom, handleSearchDone}) => {
     return <MCWrapper>
-        {newMessage ? <SearchBar /> : 
-            <><ChatTitle activeUser={activeRoom ? activeRoom.activeUser : null} />
-            {
-                activeRoom && activeRoom.roomId ?
+        {newMessage ? <SearchBar handleSearchDone={handleSearchDone}/> : 
+            activeRoom && activeRoom.roomId ?
+            <><ChatTitle activeUser={activeRoom.activeUser} />
                 <QueryRenderer environment={environment()} query={GetAllMessage} variables={{count: 20, cursor: '', roomId: activeRoom.roomId}} render={({ error, props }) => {
                     if (error) {
                         return null;
                     }
                     if (!props) {
                         const loadingIcon = <LoadingOutlined style={{ fontSize: 30 }} spin />;
-                        return <NoMessage><div className="tablecell"><Spin indicator={loadingIcon} /></div></NoMessage>
+                        return <LoadingMessage><div className="tablecell"><Spin indicator={loadingIcon} /></div></LoadingMessage>
                     }
                     return <ChatArea activeRoom={activeRoom.roomId} messages={props.RoomGraphGetAllMessage}/>
-                }}/> : <NoMessage></NoMessage>
-            }
-            <ChatComposer activeRoom={activeRoom ? activeRoom.roomId : null}/></>
+                }}/> 
+            
+            <ChatComposer activeRoom={activeRoom.roomId}/></>
+            : <NoActiveRoom>
+                <div className="content">
+                    Pick someone to start messaging
+                </div>
+            </NoActiveRoom>
         }
     </MCWrapper>    
 }

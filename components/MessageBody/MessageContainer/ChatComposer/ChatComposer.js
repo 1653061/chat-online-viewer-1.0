@@ -5,6 +5,7 @@ import { Formik, Form } from 'formik';
 import { commitMutation } from 'react-relay';
 import environment from 'relay/RelayEnvironment';
 import { CreateMessage } from 'relay/graphql/RoomGraph';
+import * as Yup from 'yup';
 
 const ChatComposer = ({ activeRoom }) => {
     const sendMessage = ({ textmessage }, actions) => {
@@ -20,7 +21,6 @@ const ChatComposer = ({ activeRoom }) => {
               }
               else {
                 actions.resetForm({});
-                // console.log("SearchBar -> CreateConnection", RoomGraphAddNewChat)
               }
               
             },
@@ -43,9 +43,13 @@ const ChatComposer = ({ activeRoom }) => {
     return <ChatComposerWrapper>
         <Formik
             initialValues={{
-                textmessage: '',
+                textmessage: null,
             }}
             onSubmit={sendMessage}
+            validationSchema={Yup.object({
+              textmessage: Yup.string()
+                .nullable(false)
+          })}
         >
           {({values}) => <Form>
                 <div className="chatcomposer">

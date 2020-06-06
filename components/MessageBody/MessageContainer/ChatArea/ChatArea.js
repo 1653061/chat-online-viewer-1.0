@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { ChatAreaWrapper } from './ChatArea.style';
+import { ChatAreaWrapper, NoMessage } from './ChatArea.style';
 import { createPaginationContainer, requestSubscription } from 'react-relay';
 import { GetAllMessageFragment, GetAllMessagePaging, SubscriptionNewMessage } from 'relay/graphql/RoomGraph';
 import { ROOT_ID, ConnectionHandler } from 'relay-runtime';
@@ -55,10 +55,6 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                     if (errors) {
                         console.log(errors);
                     }
-                    else {
-                        console.log("Chat Area -> CreateConnection", chatAdded)
-                    }
-                    
                 },
                 updater: proxyStore => {
                     const createConnection = proxyStore.getRootField('chatAdded').getLinkedRecord('node');
@@ -72,7 +68,6 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                             createConnection,
                             'ChatEdge',
                         );
-                        console.log("ChatArea -> edge", edge)
                         setShouldScrollToBottom(true);
                         ConnectionHandler.insertEdgeAfter(connection, edge)
                     }
@@ -102,17 +97,12 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                     listRef.current.scrollTop = 5;
                     relay.loadMore(10, error => console.log(error));
                 }
-                else {
-                    message.warning('Out of data');
-                }
             }
         }
     }, []);
 
     useEffect(() => {
-        if (loading === true) {
-            setLoading(false);
-        }
+        if (loading) setLoading(false)
     }, [messagesData]);
 
     const lastMessage = () => {
@@ -120,10 +110,10 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
     }
 
     return <ChatAreaWrapper ref={listRef}>
-        {/* {messagesData.length === 0 && <div>Type something to begin chat</div>} */}
+        {messagesData.length === 0 && <NoMessage><div className="content">Type something to begin chat</div></NoMessage>}
         {loading && <div className="Spinning"><Spin /></div>}
         {
-            messagesData && messagesData.length &&
+            messagesData && messagesData.length > 0 &&
                     <List 
                         dataSource={messagesData}
                         split={false}

@@ -1,14 +1,15 @@
 import React from 'react';
-import { HeaderWrapper } from './Header.style';
+import { HeaderWrapper, HeaderRight, LinkHandler } from './Header.style';
+import Link from 'next/link';
 
 const Header = ({}) => {
     return <HeaderWrapper>
-        <a href="/" className="logo">Chat Application</a>
-        <div className="header-right">
-            <a href="/" className="active">Home</a>
-            <a href="/">Features</a>
-            <a href="/">About Us</a>
-        </div>
+        <Link href="/"><LinkHandler className="logo">Chat Application</LinkHandler></Link>
+        <HeaderRight>
+            <Link href="/"><LinkHandler className="active">Home</LinkHandler></Link>
+            <Link href="/"><LinkHandler>Features</LinkHandler></Link>
+            <Link href="/"><LinkHandler>About Us</LinkHandler></Link>
+        </HeaderRight>
     </HeaderWrapper>
 }
 

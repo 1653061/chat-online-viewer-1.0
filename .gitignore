@@ -31,3 +31,6 @@ yarn-error.log*
 
 relay/graphql/__generated__
 .env
+/out_publish/
+/out_functions/
+/404.html

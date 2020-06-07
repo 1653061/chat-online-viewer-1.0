@@ -3,6 +3,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 module.exports = {
     distDir: 'build',
+    target: 'serverless',
     env: {
         GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
         FACEBOOK_APPID: process.env.FACEBOOK_APPID,

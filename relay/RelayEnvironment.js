@@ -7,7 +7,7 @@ import ws from 'websocket'
 
 let relayEnvironment = null
 
-const subscriptionClient = new SubscriptionClient('ws://localhost:4200/graphql', {
+const subscriptionClient = new SubscriptionClient(process.env.SOCKET_GRAPHQL_ENDPOINT, {
   reconnect: true
 }, ws.client)
 

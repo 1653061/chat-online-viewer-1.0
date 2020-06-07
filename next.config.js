@@ -7,5 +7,6 @@ module.exports = {
         GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
         FACEBOOK_APPID: process.env.FACEBOOK_APPID,
         GOOGLE_CLIENTID: process.env.GOOGLE_CLIENTID,
+        SOCKET_GRAPHQL_ENDPOINT: process.env.SOCKET_GRAPHQL_ENDPOINT,
     },
 }

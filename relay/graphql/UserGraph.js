@@ -90,3 +90,12 @@ export const ResetPassword = graphql`
     }
   }
 `
+
+export const ChangePassword = graphql`
+  mutation UserGraphChangePassowordMutation($input: ChangePasswordInput!) {
+    UserGraphChangePassword(input: $input) {
+      message
+      statusCode
+    }
+  }
+`

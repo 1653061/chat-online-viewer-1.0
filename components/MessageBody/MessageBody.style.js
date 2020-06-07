@@ -23,3 +23,7 @@ export const LogOut = styled.button`
     background-color: transparent;
     font-size: 1.1rem;
 `
+
+export const BasicInfo = styled.div`
+    border-bottom: 1px solid rgba(0, 0, 0, .10);
+`  

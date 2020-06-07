@@ -108,6 +108,12 @@ input ResetPasswordInput {
     password: String!
 }
 
+input ChangePasswordInput {
+    email: String!
+    currentpassword: String!
+    password: String!
+}
+
 type Query {
     UserGraphGetInfo: User!
     UserGraphInfo: BasicResponse!
@@ -125,6 +131,7 @@ type Mutation {
     RoomGraphAddNewChat(message: String!, roomId: String!): BasicResponse!
     UserGraphSendMailResetPassword(email: String!): BasicResponse!
     UserGraphResetPassword(input: ResetPasswordInput!): BasicResponse!
+    UserGraphChangePassword(input: ChangePasswordInput!): BasicResponse!
 }
 
 type Subscription {

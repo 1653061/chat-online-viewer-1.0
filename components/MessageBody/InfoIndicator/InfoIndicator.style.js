@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const InfoWrapper = styled.div`
-    border-bottom: 1px solid rgba(0, 0, 0, .10);
     width: 100%;
     vertical-align: middle;
     display: flex;
@@ -18,4 +17,18 @@ export const Label = styled.div`
 export const Content = styled.div`
     width: 70%;
     flex: 3;
+`
+
+export const EditButton = styled.button`
+    margin: auto auto;
+    padding: auto auto;
+    font-size: 0.7rem;
+    border-radius: 50%;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+`
+
+export const Icon = styled.div`
+
 `

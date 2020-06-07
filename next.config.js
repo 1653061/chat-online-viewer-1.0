@@ -5,5 +5,7 @@ module.exports = {
     distDir: 'build',
     env: {
         GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
+        FACEBOOK_APPID: process.env.FACEBOOK_APPID,
+        GOOGLE_CLIENTID: process.env.GOOGLE_CLIENTID,
     },
 }

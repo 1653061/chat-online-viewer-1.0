@@ -1,4 +1,5 @@
 import React from 'react';
+import Router from 'next/router'
 import { 
     ChatTitleWrapper,
     Logo,
@@ -8,11 +9,13 @@ import {
     Icon
 } from './ChatTtitle.style';
 
-const ChatTitle = ({activeUser}) => {
+const ChatTitle = ({activeUser, activeRoom}) => {
     return <ChatTitleWrapper>
         <Logo src="/avatar.png" />
         <NameTitle><Name>{activeUser ? activeUser : ''}</Name></NameTitle>
-        <Btn className="rightedge"><Icon src="/new.png" /></Btn>
+        <Btn className="rightedge" onClick={() => {
+            Router.push(`/call/${activeRoom.roomId}`);
+        }}><Icon src="/new.png" /></Btn>
         <Btn className="btn"><Icon src="/setting.png" /></Btn>
     </ChatTitleWrapper>
 }

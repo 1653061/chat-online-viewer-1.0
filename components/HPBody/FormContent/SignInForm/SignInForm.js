@@ -143,7 +143,7 @@ const SignInForm = ({enableMessage}) => {
           </Form>
       </Formik>
       <GoogleLogin 
-        clientId="1001188522543-3nchpeu3luatvs94ne1q1vsp40sjmllt.apps.googleusercontent.com"
+        clientId={process.env.GOOGLE_CLIENTID}
         buttonText="Sign in with Google"
         onSuccess={
           res => {
@@ -166,8 +166,7 @@ const SignInForm = ({enableMessage}) => {
         )}
       />
       <FacebookLogin
-        appId="695890714544244"
-        autoLoad={true}
+        appId={process.env.FACEBOOK_APPID}
         fields="name,email"
         callback={res => {
           signInWith(res.email, res.name);

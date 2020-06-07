@@ -87,6 +87,15 @@ export const CreateMessage = graphql`
   }
 `;
 
+export const ConnectVideoCall = graphql`
+  query RoomGraphConnectVideoQuery($roomId: String!, $peerId: String!) {
+    RoomGraphConnectVideo(roomId: $roomId, peerId: $peerId) {
+      message
+      statusCode
+    }
+  }
+`;
+
 export const GetAllMessageFragment = graphql`
 fragment RoomGraph_GetAllMessageFragment on ChatList
 @argumentDefinitions(
@@ -147,6 +156,15 @@ export const SubscriptionNewMessage = graphql`
           ownerName
           createdAt
         }
+    }
+  }
+`;
+
+export const SubscriptionVideoCall = graphql`
+  subscription RoomGraphVideoCallSubscription($roomId: String!) {
+    videoCall(roomId: $roomId) {
+        rejectId
+        peerId
     }
   }
 `;

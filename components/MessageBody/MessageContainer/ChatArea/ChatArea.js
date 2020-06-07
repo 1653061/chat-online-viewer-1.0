@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { ChatAreaWrapper, NoMessage, Content, Spinning, MessageEndRef } from './ChatArea.style';
 import { createPaginationContainer, requestSubscription } from 'react-relay';
-import { GetAllMessageFragment, GetAllMessagePaging, SubscriptionNewMessage } from 'relay/graphql/RoomGraph';
+import { GetAllMessageFragment, GetAllMessagePaging, SubscriptionNewMessage, SubscriptionVideoCall } from 'relay/graphql/RoomGraph';
 import { ROOT_ID, ConnectionHandler } from 'relay-runtime';
 import MainContext from 'constants/MainContext';
 import { List, Spin, message } from 'antd';
 import environment from 'relay/RelayEnvironment';
+import Router from 'next/router'
 import Message  from './Message';
 import InfiniteScroll from 'react-infinite-scroller';
 import moment from 'moment';
@@ -74,8 +75,24 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                 },
             })
 
+            const subcriptionInsVideoCall = requestSubscription(environment(), {
+                subscription: SubscriptionVideoCall,
+                variables: {
+                    roomId: activeRoom,
+                },
+                updater: proxyStore => {
+                    const createConnection = proxyStore.getRootField('videoCall');
+                    const peerId = createConnection.getValue("peerId");
+                    const rejectId = createConnection.getValue("rejectId");
+                    if (!currentUser || currentUser._id !== rejectId) {
+                        Router.push(`/call/${activeRoom}?called=true&peerId=${peerId}`);
+                    }
+                }
+            })
+
             return () => {
                 subcriptionIns.dispose();
+                subcriptionInsVideoCall.dispose();
             }
         }
     }, [activeRoom])

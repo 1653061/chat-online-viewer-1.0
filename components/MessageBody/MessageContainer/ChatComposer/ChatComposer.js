@@ -15,6 +15,10 @@ import * as Yup from 'yup';
 
 const ChatComposer = ({ activeRoom }) => {
     const sendMessage = ({ textmessage }, actions) => {
+        if (!textmessage.trim()) {
+          actions.resetForm({});
+          return;
+        }
         commitMutation(environment(), {
             mutation: CreateMessage,
             variables: {
@@ -54,6 +58,7 @@ const ChatComposer = ({ activeRoom }) => {
             onSubmit={sendMessage}
             validationSchema={Yup.object({
               textmessage: Yup.string()
+                .trim()
                 .nullable(false)
           })}
         >

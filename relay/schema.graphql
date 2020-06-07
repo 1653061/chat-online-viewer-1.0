@@ -82,6 +82,11 @@ type EmailVerifyTokenPayload {
     isVerified: Boolean!
 }
 
+type RoomVideo {
+    peerId: String!
+    rejectId: String!
+}
+
 input CreateUserInput {
     name: String!
     password: String!
@@ -120,6 +125,7 @@ type Query {
     UserGraphVerifyToken: UserPayload!
     RoomGraphGetAllRoom: RoomList!
     RoomGraphGetAllMessage(roomId: String!): ChatList!
+    RoomGraphConnectVideo(roomId: String!, peerId: String!): BasicResponse!
 }
 
 type Mutation {
@@ -136,4 +142,5 @@ type Mutation {
 
 type Subscription {
     chatAdded(roomId: String!): ChatEdge!
+    videoCall(roomId: String!): RoomVideo!
 }

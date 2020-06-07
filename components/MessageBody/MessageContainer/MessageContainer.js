@@ -14,7 +14,7 @@ const MessageContainter = ({newMessage, activeRoom, handleSearchDone}) => {
     return <MCWrapper>
         {newMessage ? <SearchBar handleSearchDone={handleSearchDone}/> : 
             activeRoom && activeRoom.roomId ?
-            <><ChatTitle activeUser={activeRoom.activeUser} />
+            <><ChatTitle activeUser={activeRoom.activeUser} activeRoom={activeRoom} />
                 <QueryRenderer environment={environment()} query={GetAllMessage} variables={{count: 20, cursor: '', roomId: activeRoom.roomId}} render={({ error, props }) => {
                     if (error) {
                         return null;

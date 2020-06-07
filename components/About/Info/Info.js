@@ -1,11 +1,13 @@
 import React from 'react'
-import { Container, ContentText } from './Info.style'
+import { Container, ContentText, Title } from './Info.style'
 
 
 const Info = ({}) => {
     return <Container>
-        <ContentText>This is our online communication app.</ContentText>
-        <ContentText>People can chat and call for each other.</ContentText>
+        <Title> CHAT APPLICATION </Title>
+        <ContentText>This is our online communication app</ContentText>
+        <ContentText>People can chat and call for each other</ContentText>
+        
     </Container>
 }
 

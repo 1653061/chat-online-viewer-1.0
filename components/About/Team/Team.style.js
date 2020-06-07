@@ -2,7 +2,9 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
     width: 100%;
-`
-export const Avatar = styled.img`
-    
+    height: auto;
+    background-color: #f8f8ff;
+    display: flex;
+    flex-direction: inherit;
+    padding: 5%; 
 `

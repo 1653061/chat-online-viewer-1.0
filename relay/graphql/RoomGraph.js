@@ -160,6 +160,26 @@ export const SubscriptionNewMessage = graphql`
   }
 `;
 
+export const SubscriptionNewRoom = graphql`
+  subscription RoomGraphRoomAddedSubscription($clientId: String!) {
+    roomAdded(clientId: $clientId) {
+      cursor
+      node {
+        _id
+        id
+        lastMessage
+        title
+        users {
+          _id
+          name
+          phone
+          email
+        }
+      }
+    }
+  }
+`;
+
 export const SubscriptionVideoCall = graphql`
   subscription RoomGraphVideoCallSubscription($roomId: String!) {
     videoCall(roomId: $roomId) {

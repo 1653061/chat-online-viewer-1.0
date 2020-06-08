@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { List } from 'antd';
-import { createPaginationContainer } from 'react-relay';
-import { GetAllRoomFragment, GetAllRoomPaging } from 'relay/graphql/RoomGraph';
+import { createPaginationContainer, requestSubscription } from 'react-relay';
+import { ROOT_ID, ConnectionHandler } from 'relay-runtime';
+import { GetAllRoomFragment, GetAllRoomPaging, SubscriptionNewRoom } from 'relay/graphql/RoomGraph';
 import MainContext from 'constants/MainContext';
+import environment from 'relay/RelayEnvironment';
 import { 
     FriendCard, 
     FriendListWrapper, 
@@ -40,6 +42,36 @@ const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom,
             setUserDatas(userDataList);
         }
     }, [currentUser, rooms])
+    
+    useEffect(() => {
+        if (currentUser) {
+            const subcriptionIns = requestSubscription(environment(), {
+                subscription: SubscriptionNewRoom,
+                variables: {
+                    clientId: currentUser._id,
+                },
+                updater: proxyStore => {
+                    const createConnection = proxyStore.getRootField('roomAdded').getLinkedRecord('node');
+                    const root = proxyStore.get(ROOT_ID);
+                    const roomAllQueryStore = root.getLinkedRecord("RoomGraphGetAllRoom");
+                    const connection = ConnectionHandler.getConnection(roomAllQueryStore, "GetAllRoomChatList_allRooms", []);
+                    if (connection) {
+                        const edge = ConnectionHandler.createEdge(
+                            proxyStore,
+                            connection,
+                            createConnection,
+                            'RoomEdge',
+                        );
+                        ConnectionHandler.insertEdgeBefore(connection, edge)
+                    }
+                },
+            })
+
+            return () => {
+                subcriptionIns.dispose();
+            }
+        }
+    }, [currentUser])
 
     const handleClickFriendCard = (item) => {
         const newUserDatas = userDatas.map(user => {

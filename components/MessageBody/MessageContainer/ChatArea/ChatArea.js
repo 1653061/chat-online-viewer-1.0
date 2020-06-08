@@ -54,11 +54,6 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                 variables: {
                     roomId: activeRoom,
                 },
-                onCompleted: ({ chatAdded }, errors) => {
-                    if (errors) {
-                        console.log(errors);
-                    }
-                },
                 updater: proxyStore => {
                     const createConnection = proxyStore.getRootField('chatAdded').getLinkedRecord('node');
                     const root = proxyStore.get(ROOT_ID);

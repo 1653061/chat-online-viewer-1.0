@@ -143,4 +143,5 @@ type Mutation {
 type Subscription {
     chatAdded(roomId: String!): ChatEdge!
     videoCall(roomId: String!): RoomVideo!
+    roomAdded(clientId: String!): RoomEdge!
 }

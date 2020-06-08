@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ConfirmationWrapper } from './ConfirmationPage.style';
-import { useRouter } from 'next/router';
+import { ConfirmationWrapper, Division } from './ConfirmPage.style';
+import Router, { useRouter } from 'next/router';
 import environment from 'relay/RelayEnvironment';
 import { commitMutation } from 'react-relay';
 import { VerifyEmailToken } from 'relay/graphql/UserGraph';
-import Router from 'next/router';
 import { Result, Button, message } from 'antd';
 
 const ConfirmationPage = ({}) => {
@@ -86,7 +85,7 @@ const ConfirmationPage = ({}) => {
     }
 
     return <ConfirmationWrapper>
-        {result.isShow ? showResult() : message.loading('Please waiting to confirm...', 1)}
+        {result.isShow ? showResult() : <Division>Waiting to verify...</Division>}
     </ConfirmationWrapper>
 }
 

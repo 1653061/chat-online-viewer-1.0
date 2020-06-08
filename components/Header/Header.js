@@ -7,8 +7,8 @@ const Header = ({isHome, isFeature, isAbout}) => {
         <Link href="/"><LinkHandler className="logo">Chat Application</LinkHandler></Link>
         <HeaderRight>
             <Link href="/"><LinkHandler className={isHome && 'active'}>Home</LinkHandler></Link>
-            <Link href="/feature"><LinkHandler className={isFeature && 'active'} >Features</LinkHandler></Link>
-            <Link href="/about"><LinkHandler className={isAbout && 'active'} >About Us</LinkHandler></Link>
+            <Link href="/Feature"><LinkHandler className={isFeature && 'active'} >Features</LinkHandler></Link>
+            <Link href="/About"><LinkHandler className={isAbout && 'active'} >About Us</LinkHandler></Link>
         </HeaderRight>
     </HeaderWrapper>
 }

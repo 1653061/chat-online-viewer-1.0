@@ -1,7 +1,7 @@
-import ConfirmationPage from 'components/ConfirmationPage';
+import ConfirmPage from 'components/ConfirmPage';
 
 const Confirmation = ({}) => {
-    return <ConfirmationPage />  
+    return <ConfirmPage />  
 }
 
 export default Confirmation;

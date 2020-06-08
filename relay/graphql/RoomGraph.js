@@ -188,3 +188,12 @@ export const SubscriptionVideoCall = graphql`
     }
   }
 `;
+
+export const SubscriptionLastMessage = graphql`
+  subscription RoomGraphLastMessageSubscription($clientId: String!) {
+    updateLastMessage(clientId: $clientId) {
+        lastMessage
+        roomId
+    }
+  }
+`;

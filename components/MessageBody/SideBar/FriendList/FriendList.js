@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { List } from 'antd';
 import { createPaginationContainer, requestSubscription } from 'react-relay';
 import { ROOT_ID, ConnectionHandler } from 'relay-runtime';
-import { GetAllRoomFragment, GetAllRoomPaging, SubscriptionNewRoom } from 'relay/graphql/RoomGraph';
+import { GetAllRoomFragment, GetAllRoomPaging, SubscriptionNewRoom, SubscriptionLastMessage } from 'relay/graphql/RoomGraph';
 import MainContext from 'constants/MainContext';
 import environment from 'relay/RelayEnvironment';
 import { 
@@ -67,8 +67,32 @@ const FriendList = ({newMessage, discardNewMessage, rooms, relay, getActiveRoom,
                 },
             })
 
+            const subcriptionInsLastMessage = requestSubscription(environment(), {
+                subscription: SubscriptionLastMessage,
+                variables: {
+                    clientId: currentUser._id,
+                },
+                updater: proxyStore => {
+                    const updateLastMessage = proxyStore.getRootField('updateLastMessage');
+                    const lastMessage = updateLastMessage.getValue("lastMessage");
+                    const roomId = updateLastMessage.getValue("roomId");
+                    const root = proxyStore.get(ROOT_ID);
+                    const roomAllQueryStore = root.getLinkedRecord("RoomGraphGetAllRoom");
+                    const connection = ConnectionHandler.getConnection(roomAllQueryStore, "GetAllRoomChatList_allRooms", []);
+                    connection.getLinkedRecords("edges").forEach((edge) => {
+                        const cur = edge.getLinkedRecord("node");
+                        const curId = cur.getValue("_id");
+                        if (curId === roomId) {
+                            cur.setValue(lastMessage, "lastMessage");
+                            edge.setLinkedRecord(cur, "node");
+                        }
+                    });
+                },
+            })
+
             return () => {
                 subcriptionIns.dispose();
+                subcriptionInsLastMessage.dispose();
             }
         }
     }, [currentUser])

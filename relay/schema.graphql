@@ -82,6 +82,11 @@ type EmailVerifyTokenPayload {
     isVerified: Boolean!
 }
 
+type LastMessage {
+    lastMessage: String!
+    roomId: String!
+}
+
 type RoomVideo {
     peerId: String!
     rejectId: String!
@@ -144,4 +149,5 @@ type Subscription {
     chatAdded(roomId: String!): ChatEdge!
     videoCall(roomId: String!): RoomVideo!
     roomAdded(clientId: String!): RoomEdge!
+    updateLastMessage(clientId: String!): LastMessage!
 }

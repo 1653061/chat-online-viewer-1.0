@@ -28,6 +28,17 @@ export const BubbleContainer = styled.div`
     justify-content: ${props => props.isMine ? 'flex-end' : ''};
 `
 
+export const LinkHolder = styled.a`
+    color: ${props => props.isMine ? 'white' : 'black'};
+    text-decoration: underline;
+
+    &:hover {
+        color: ${props => props.isMine ? 'white' : 'black'};
+        cursor: pointer;
+        text-decoration: underline;
+    }
+`
+
 export const Bubble = styled.div`
     margin: 1px 0px;
     background: ${props => props.isMine ? '#007aff' : '#f4f4f8'};

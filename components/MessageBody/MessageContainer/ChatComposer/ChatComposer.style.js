@@ -19,7 +19,7 @@ export const ButtonArea = styled.div`
     justify-content: center;
 `
 
-export const SendButton = styled.div`
+export const SendButton = styled.button`
     border-radius: 50%;
     border: none;
     outline: none;

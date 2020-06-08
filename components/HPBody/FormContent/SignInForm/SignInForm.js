@@ -105,8 +105,7 @@ const SignInForm = ({enableMessage}) => {
     return <Container>
       {noti.isNotified ? <Noti>
         <Content>
-          {noti.message}.
-          {noti.message === 'Account is not verified' ? <LinkHandler> Click here to resend activation code</LinkHandler> : null}
+          {noti.message}
         </Content>
       </Noti> : null}
       <Formik

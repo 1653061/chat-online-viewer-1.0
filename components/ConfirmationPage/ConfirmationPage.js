@@ -5,10 +5,14 @@ import environment from 'relay/RelayEnvironment';
 import { commitMutation } from 'react-relay';
 import { VerifyEmailToken } from 'relay/graphql/UserGraph';
 import Router from 'next/router';
+import { Result, Button, message } from 'antd';
 
 const ConfirmationPage = ({}) => {
     const router = useRouter();
-    const [isShowDialog, setIsShowDialog] = useState(false);
+    const [result, setResult] = useState({
+        isShow: false,
+        success: false
+    });
     const token = router.query.token;
 
     const verifyEmailToken = () => {
@@ -26,10 +30,16 @@ const ConfirmationPage = ({}) => {
                 else {
                     const { isVerified } = UserGraphVerifyEmailToken;
                     if (isVerified) {
-                        Router.push('/message');
+                        setResult({
+                            isShow: true,
+                            success: true
+                        });
                     }
                     else {
-                        setIsShowDialog(true);
+                        setResult({
+                            isShow: true,
+                            success: false
+                        })
                     }
                 }
             },
@@ -44,8 +54,39 @@ const ConfirmationPage = ({}) => {
             verifyEmailToken();
     }, []);
 
+    const handleClick = () => {
+        Router.push('/');
+    }
+
+    const showResult = () => {
+        if (result.success) {
+            return <Result
+                status="success"
+                title="Successfully Verified"
+                subTitle="You can log in with this account"
+                extra={
+                    <Button type="primary" onClick={handleClick} >
+                        Go to Homepage
+                    </Button>
+                }
+            />
+        }
+        else {
+            return <Result
+                status="error"
+                title="Failed to verify"
+                subTitle="Check your mail again to verify"
+                extra={
+                    <Button type="primary" onClick={handleClick} >
+                        Go to Homepage
+                    </Button>
+                }
+            />
+        }
+    }
+
     return <ConfirmationWrapper>
-        {isShowDialog ? 'Failed verify' : 'Please waiting to confirmation.'}
+        {result.isShow ? showResult() : message.loading('Please waiting to confirm...', 1)}
     </ConfirmationWrapper>
 }
 

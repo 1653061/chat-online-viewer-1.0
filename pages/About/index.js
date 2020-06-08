@@ -4,7 +4,7 @@ import About from 'components/About'
 
 const Main = ({}) => {
     return <>
-        <Header/>
+        <Header isAbout/>
         <About/>
     </>
 }

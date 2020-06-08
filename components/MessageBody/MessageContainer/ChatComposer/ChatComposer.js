@@ -71,7 +71,7 @@ const ChatComposer = ({ activeRoom }) => {
                         placeholder="Type a message..."
                     />
                     <ButtonArea>
-                        <SendButton><Icon src="/send.png" /></SendButton>
+                        <SendButton type="submit" ><Icon src="/send.png" /></SendButton>
                     </ButtonArea>
                 </ChatComposerSection>
             </Form>

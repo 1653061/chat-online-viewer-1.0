@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { MessageWrapper, MessageSection, TimeStamp, BubbleContainer, Bubble } from './Message.style';
+import { MessageWrapper, MessageSection, TimeStamp, BubbleContainer, Bubble, LinkHolder } from './Message.style';
 
 const Message = props => {
     const {
@@ -17,6 +17,13 @@ const Message = props => {
         }
     }, []);
 
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+    if (urlRegex.test(data.message)) {
+        console.log(isMine);
+        data.message = <LinkHolder href={data.message} isMine={isMine} target="_blank" >{data.message}</LinkHolder>
+    }    
+
     return <MessageWrapper>
             <MessageSection>
             {
@@ -28,7 +35,7 @@ const Message = props => {
 
                 <BubbleContainer isMine={isMine} >
                     <Bubble isMine={isMine} title={friendlyTimestamp}>
-                        { data.message }
+                        {data.message}
                     </Bubble>
                 </BubbleContainer>
             </MessageSection>

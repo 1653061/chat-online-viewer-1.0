@@ -4,6 +4,7 @@ import { createPaginationContainer, requestSubscription } from 'react-relay';
 import { GetAllMessageFragment, GetAllMessagePaging, SubscriptionNewMessage, SubscriptionVideoCall } from 'relay/graphql/RoomGraph';
 import { ROOT_ID, ConnectionHandler } from 'relay-runtime';
 import MainContext from 'constants/MainContext';
+import MessageContext from 'constants/MessageContext';
 import { List, Spin, message } from 'antd';
 import environment from 'relay/RelayEnvironment';
 import Router from 'next/router'
@@ -13,12 +14,13 @@ import moment from 'moment';
 
 const ChatArea = ({ activeRoom, messages = [], relay }) => {
     const { currentUser } = useContext(MainContext);
+    const { shouldScrollToBottom, setShouldScrollToBottom } = useContext(MessageContext);
     const [messagesData, setMessagesData] = useState([]);
     const messagesEndRef = useRef();
     const listRef = useRef();
     const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
-    const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+    const [canFetch, setCanFetch] = useState(true);
+    const [fetchMore, setFetchMore] = useState(false);
 
     useEffect(() => {
         if (messages?.allChat?.edges?.length && currentUser) {
@@ -69,7 +71,6 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
                             createConnection,
                             'ChatEdge',
                         );
-                        setShouldScrollToBottom(true);
                         ConnectionHandler.insertEdgeAfter(connection, edge)
                     }
                 },
@@ -108,18 +109,29 @@ const ChatArea = ({ activeRoom, messages = [], relay }) => {
     useEffect(() => {
         listRef.current.onscroll = () => {
             if (listRef.current.scrollTop === 0) {
-                if (relay.hasMore()) {
-                    setLoading(true);
-                    setShouldScrollToBottom(false);
-                    listRef.current.scrollTop = 5;
-                    relay.loadMore(10, error => console.log(error));
-                }
+                setFetchMore(true);
             }
         }
     }, []);
 
     useEffect(() => {
-        if (loading) setLoading(false)
+        if (fetchMore) {
+            if (relay.hasMore() && canFetch) {
+                setCanFetch(false);
+                setLoading(true);
+                setShouldScrollToBottom(false);
+                listRef.current.scrollTop = 5;
+                relay.loadMore(10, error => {});
+            }
+        }
+    }, [fetchMore])
+
+    useEffect(() => {
+        if (loading) {
+            setLoading(false);
+            setCanFetch(true);
+            setFetchMore(false);
+        }
     }, [messagesData]);
 
     const lastMessage = () => {

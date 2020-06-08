@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { 
   ChatComposerWrapper,
   ChatComposerSection,
@@ -9,11 +9,18 @@ import {
 import MessageInput from './MessageInput';
 import { Formik, Form } from 'formik';
 import { commitMutation } from 'react-relay';
+import { ROOT_ID, ConnectionHandler } from 'relay-runtime';
+import MainContext from 'constants/MainContext';
 import environment from 'relay/RelayEnvironment';
 import { CreateMessage } from 'relay/graphql/RoomGraph';
+import MessageContext from 'constants/MessageContext';
+import { v4 } from 'uuid';
 import * as Yup from 'yup';
 
 const ChatComposer = ({ activeRoom }) => {
+    const { currentUser } = useContext(MainContext);
+    const { setShouldScrollToBottom } = useContext(MessageContext);
+
     const sendMessage = ({ textmessage }, actions) => {
         if (!textmessage.trim()) {
           actions.resetForm({});
@@ -34,15 +41,24 @@ const ChatComposer = ({ activeRoom }) => {
               }
               
             },
-            updater: proxyStore => {
-              // const createConnection = proxyStore.getRootField('RoomGraphCreateRoom');
-              // const newRoom = createConnection.getLinkedRecord('room');
-              // const root = proxyStore.get(ROOT_ID);
-              // const roomAllQueryStore = root.getLinkedRecord("RoomGraphGetAllRoom");
-              // const connection = ConnectionHandler.getConnection(roomAllQueryStore, "GetAllRoomChatList_allRooms", []);
-              // if (connection) {
-              //   ConnectionHandler.insertEdgeBefore(connection, newRoom)
-              // }
+            optimisticUpdater: proxyStore => {
+              const node = proxyStore.create(v4(), "Chat")
+              node.setValue(textmessage, "message");
+              node.setValue(currentUser._id, "ownerId");
+              node.setValue(currentUser.name, "ownerName");
+              const root = proxyStore.get(ROOT_ID);
+              const chatAllQueryStore = root.getLinkedRecord(`RoomGraphGetAllMessage(roomId:"${activeRoom}")`);
+              const connection = ConnectionHandler.getConnection(chatAllQueryStore, "GetAllRoomChatList_allChat", []);
+              if (connection) {
+                  const edge = ConnectionHandler.createEdge(
+                      proxyStore,
+                      connection,
+                      node,
+                      'ChatEdge',
+                  );
+                  setShouldScrollToBottom(true);
+                  ConnectionHandler.insertEdgeAfter(connection, edge)
+              }
             },
             onError: (err) => {
               console.log(err);

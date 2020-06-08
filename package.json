@@ -29,6 +29,7 @@
     "relay-runtime": "^9.1.0",
     "styled-components": "^5.1.0",
     "subscriptions-transport-ws": "^0.9.16",
+    "uuid": "^8.1.0",
     "websocket": "^1.0.31",
     "yup": "^0.28.5"
   },

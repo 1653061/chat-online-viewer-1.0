@@ -3,6 +3,8 @@ import { Container } from './HPBody.style';
 import FormContent from './FormContent';
 import Banner from './Banner';
 import { notification, message } from 'antd';
+import FeatureSection from './FeatureSection';
+import Footer from 'components/Footer';
 
 const enableNoti = () => {
     notification.success({
@@ -16,10 +18,12 @@ const enableMessage = () => {
 }
 
 const HPBody = ({}) => {
-    return <Container>
+    return <><Container>
         <FormContent enableNoti={enableNoti} enableMessage={enableMessage} />
         <Banner />
     </Container>
+    <FeatureSection />
+    </>
 }
 
 export default HPBody;

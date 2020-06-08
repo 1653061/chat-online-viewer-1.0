@@ -1,6 +1,9 @@
 import styled from 'styled-components';
+import { device } from 'constants/device';
 
 export const Wrapper = styled.div`
-    width: 100%;
-    height: 100%;
+
+    @media ${device.laptop} {
+        margin-top: 130px;
+    }
 `

@@ -1,30 +1,35 @@
 import styled from 'styled-components'
 
 export const Container = styled.div `
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    flex: 1;
-    background-color: #71c7ec;
+    margin: 20px auto;
+    background-color: rgba(0, 0, 0, .04);
+    border-radius: 8px;
 `
 
 export const Avatar = styled.img`
-    flex: 1;
-    height: 100%;
-    width: 100%;
-    padding-left: 45px;
-    padding-right: 45px;
+    width: 300px;
+    height: 300px;
+    border-radius: 8px 8px 0 0;
 `
 
 export const Info = styled.p`
-    flex: 3;
-    font-size: 25px;
-    align-self: center;
-    margin: 1px;
+    text-align: center;
     &.Name {
-        font-weight: 750;
+        font-weight: bold;
+        font-size: 1.2rem;
     }
     &.Desp {
         font-style: italic;
     }
+`
+
+export const FacebookLogo = styled.img`
+    width: 30px;
+    height: 30px;
+`
+
+export const FacebookLink = styled.a`
+    display: block;
+    margin-bottom: 20px;
+    text-align: center;
 `

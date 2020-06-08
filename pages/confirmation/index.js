@@ -1,7 +1,7 @@
 import ConfirmationPage from 'components/ConfirmationPage';
 
-const Main = ({}) => {
+const Confirmation = ({}) => {
     return <ConfirmationPage />  
 }
 
-export default Main;
+export default Confirmation;

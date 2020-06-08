@@ -15,8 +15,8 @@ const ChatTitle = ({activeUser, activeRoom}) => {
         <NameTitle><Name>{activeUser ? activeUser : ''}</Name></NameTitle>
         <Btn className="rightedge" onClick={() => {
             Router.push(`/call/${activeRoom.roomId}`);
-        }}><Icon src="/new.png" /></Btn>
-        <Btn className="btn"><Icon src="/setting.png" /></Btn>
+        }}><Icon src="/phone.png" /></Btn>
+        {/* <Btn className="btn"><Icon src="/setting.png" /></Btn> */}
     </ChatTitleWrapper>
 }
 

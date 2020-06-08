@@ -20,7 +20,6 @@ const Message = props => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
 
     if (urlRegex.test(data.message)) {
-        console.log(isMine);
         data.message = <LinkHolder href={data.message} isMine={isMine} target="_blank" >{data.message}</LinkHolder>
     }    
 

@@ -3,7 +3,8 @@ import FeatureBody from 'components/FeatureBody';
 
 const Main = ({}) => {
     return <>
-        <Header isFeature />
+        <Header isFeature /> 
+        
         <FeatureBody/>
     </>
 }

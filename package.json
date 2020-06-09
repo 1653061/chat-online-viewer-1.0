@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "relay-compiler && next dev",
-    "build": "relay-compiler && next build",
+    "build": "relay-compiler && next build && next export",
     "start": "next start",
     "relay": "relay-compiler",
     "postbuild": "next-on-netlify"

@@ -10,4 +10,14 @@ module.exports = {
         GOOGLE_CLIENTID: process.env.GOOGLE_CLIENTID,
         SOCKET_GRAPHQL_ENDPOINT: process.env.SOCKET_GRAPHQL_ENDPOINT,
     },
+    exportPathMap: async function (
+        defaultPathMap,
+        { dev, dir, outDir, distDir, buildId }
+      ) {
+        return {
+          '/': { page: '/' },
+          '/About': { page: '/About' },
+          '/Feature': { page: '/Feature' },
+        }
+      },
 }

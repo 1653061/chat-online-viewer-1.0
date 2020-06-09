@@ -26,6 +26,7 @@ const ChatComposer = ({ activeRoom }) => {
           actions.resetForm({});
           return;
         }
+        actions.resetForm({});
         commitMutation(environment(), {
             mutation: CreateMessage,
             variables: {
@@ -36,10 +37,6 @@ const ChatComposer = ({ activeRoom }) => {
               if (errors) {
                 console.log(errors);
               }
-              else {
-                actions.resetForm({});
-              }
-              
             },
             optimisticUpdater: proxyStore => {
               const node = proxyStore.create(v4(), "Chat")

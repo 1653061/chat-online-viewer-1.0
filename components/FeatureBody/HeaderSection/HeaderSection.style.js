@@ -4,21 +4,18 @@ import { device } from 'constants/device';
 export const Container = styled.div`
     height: 400px;
     width: inherit;
-    background-color: white;
-    display: flex;
-    flex-direction: row;
+    background-color: rgb(145, 145, 225);
+    text-align: center;
+    padding: 100px 0;
 `
-export const ImageSection = styled.img`
-    flex: 1;
-    width: 30%;
-    height: auto;
-    margin: 3%;
-
+export const Title = styled.p` 
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: white;
 `
-export const DesSection = styled.p` 
-    font-size: 30px;
-    color: #0084FF;
-    flex: 3;
-    align-self: center;
-    padding: 50px
+export const Description = styled.p`
+    margin: 0 auto;
+    font-size: 2rem;
+    color: white;
+    width: 600px;
 `

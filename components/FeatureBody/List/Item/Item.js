@@ -1,10 +1,17 @@
 import React from 'react';
-import { ItemWrapper, ImageFeature, DesFeature } from './Item.style'
+import { ItemWrapper, ImageFeature, DesFeature, Title, Description } from './Item.style'
 
 const Item = ({src}) => {
     return <ItemWrapper>
         <ImageFeature src={src} alt="FeatureImage" />
-        <DesFeature> Description </DesFeature>
+        <DesFeature>
+            <Title>
+                Stay connected
+            </Title>
+            <Description>
+                Keep in touch with your friends anytime, anywhere
+            </Description>
+        </DesFeature>
     </ItemWrapper>
 }
 
